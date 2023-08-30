@@ -21,4 +21,11 @@ router.get("/api/csrf/restore", (req, res) => {
 });
 //This route should not be available in production, but it will not be exclusive to the production application until you implement the frontend of the application later. So for now, it will remain available to both the development and production environments.
 
+//---------------------------------
+//phase 2
+// backend/routes/index.js
+const apiRouter = require('./api');  //./api in current directory
+
+router.use('/api', apiRouter);  //just to append /api before all the other routes, since app.js already appends the router
+
 module.exports = router;
