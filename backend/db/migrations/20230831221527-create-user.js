@@ -14,6 +14,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      firstName: {   //added in phase 5
+        type: Sequelize.STRING(256),
+        allowNull: false   //no unique
+      },
+      lastName: {    //added in phase 5
+        type: Sequelize.STRING(256),
+        allowNull: false   // no unique
+      },
       username: {
         type: Sequelize.STRING(30),
         allowNull: false,

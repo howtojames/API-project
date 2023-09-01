@@ -61,6 +61,8 @@ router.post(
 
       const safeUser = {
         id: user.id,
+        firstName: user.firstName,   //added in phase 5
+        lastName: user.lastName,     //added in phase 5
         email: user.email,
         username: user.username,
       };
@@ -97,8 +99,10 @@ router.get(
     (req, res) => {
       const { user } = req;
       if (user) {
-        const safeUser = {
+        const safeUser = {        //note these places where we are creating a safeUser
           id: user.id,
+          firstName: user.firstName,   //added in phase 5
+          lastName: user.lastName,     //added in phase 5
           email: user.email,
           username: user.username,
         };

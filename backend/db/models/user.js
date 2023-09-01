@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
+      firstName: {   //added in phase 5
+        type: DataTypes.STRING(256),
+        allowNull: false   //no unique
+      },
+      lastName: {    //added in phase 5
+        type: DataTypes.STRING(256),
+        allowNull: false   // no unique
+      },
       username: {
         type: DataTypes.STRING,
         allowNull: false,

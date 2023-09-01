@@ -52,12 +52,15 @@ router.post(
     '/',
     validateSignup,  //added in phase 5
     async (req, res) => {
-      const { email, password, username } = req.body;   //get info
+      const { firstName, lastName, email, password, username } = req.body;   //get info
       const hashedPassword = bcrypt.hashSync(password);   //hash password
-      const user = await User.create({ email, username, hashedPassword }); //create user
+      const user = await User.create({ firstName, lastName, email, username, hashedPassword }); //create user
+      //added firstName, lastName accordingly phase 5
 
       const safeUser = {
         id: user.id,
+        firstName: user.firstName,   //added in phase 5
+        lastName: user.lastName,     //added in phase 5
         email: user.email,
         username: user.username,
       };
