@@ -16,18 +16,18 @@ const router = express.Router();
 router.post(
     '/',
     async (req, res, next) => {
-      const { credential, password } = req.body;
+      const { credential, password } = req.body;   //passes credential and password into post body
 
-      const user = await User.unscoped().findOne({
+      const user = await User.unscoped().findOne({   //we don't use default scope
         where: {
           [Op.or]: {
-            username: credential,
+            username: credential,    //if we find one of these, return the user
             email: credential
           }
         }
       });
 
-      if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+      if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {  //if the password doens't match, throw an error
         const err = new Error('Login failed');
         err.status = 401;
         err.title = 'Login failed';
@@ -49,7 +49,18 @@ router.post(
     }
   );
 
-
 //---------------------------------------------
+
+// Log out
+router.delete(
+    '/',
+    (_req, res) => {
+      res.clearCookie('token');      //delete the token and send success message
+      return res.json({ message: 'success' });
+    }
+);
+//---------------------------------------------
+
+
 
 module.exports = router;
