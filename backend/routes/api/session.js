@@ -9,12 +9,36 @@ const bcrypt = require('bcryptjs');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');  //import the function and middleware from the utilities
 const { User } = require('../../db/models');
 //--------------------------------------
+// phase 5
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');  //import from utils/validation.js
+//--------------------------------------
 const router = express.Router();
 
 //--------------------------------------
+
+// phase 5  - put this on top so that post /api/session can access validateLogin
+// middleware called validateLogin that will check these keys and validate them
+// POST /api/session login route will expect the body of the request to have a key of credential with either the username or email of a user and a key of password with the password of the user
+
+const validateLogin = [
+    check('credential')   //imported middleware
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage('Please provide a valid email or username.'),
+    check('password')
+      .exists({ checkFalsy: true })
+      .withMessage('Please provide a password.'),
+    handleValidationErrors   //middleware
+];
+// It checks to see whether or not req.body.credential and req.body.password are empty. If one of them is empty, then an error will be returned as the response.
+
+//---------------------------------------
+
 // Log in
 router.post(
     '/',
+    validateLogin,  //added in phase 6
     async (req, res, next) => {
       const { credential, password } = req.body;   //passes credential and password into post body
 
@@ -49,6 +73,11 @@ router.post(
     }
   );
 
+// Try setting the credential user field to an empty string. You should get a Bad Request error back.
+// Please provide a valid email or username
+// other
+// Please provide a valid password
+
 //---------------------------------------------
 
 // Log out
@@ -60,7 +89,7 @@ router.delete(
     }
 );
 //---------------------------------------------
-
+// phase 4
 // GET session user route will return the session user as JSON under the key of user
 // Restore session user   - idk why they say restore session user
 router.get(
@@ -83,6 +112,9 @@ router.get(
 //"token" cookie will display
 
 //--------------------------------------
+
+
+
 
 
 
