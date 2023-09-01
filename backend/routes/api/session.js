@@ -61,6 +61,29 @@ router.delete(
 );
 //---------------------------------------------
 
+// GET session user route will return the session user as JSON under the key of user
+// Restore session user   - idk why they say restore session user
+router.get(
+    '/',
+    (req, res) => {
+      const { user } = req;
+      if (user) {
+        const safeUser = {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+        };
+        return res.json({
+          user: safeUser
+        });
+      } else return res.json({ user: null });
+    }
+);
+
+//"token" cookie will display
+
+//--------------------------------------
+
 
 
 module.exports = router;
