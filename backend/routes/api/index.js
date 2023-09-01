@@ -2,8 +2,25 @@
 // backend/routes/api/index.js
 const router = require('express').Router();
 //----------------------------------------
+// phase 4
+const sessionRouter = require('./session.js');
+const usersRouter = require('./users.js');
+//----------------------------------------
+// moved form bottom to top in phase 3
+const { restoreUser } = require('../../utils/auth.js');  //import restoreUser from utils/auth.js, its a utility middleware
 
-router.post('/test', function(req, res) {   //accepts /api/test
+router.use(restoreUser);  // use restoreUser middleware
+//----------------------------------------
+
+//phase 4
+router.use('/session', sessionRouter);
+
+router.use('/users', usersRouter);
+
+//----------------------------------------
+
+
+router.post('/test', function(req, res) {   //accepts /api/test            ..except restoreUser would be passed in here
     res.json({ requestBody: req.body });
 });
 // to test this endpoint, go to console in developer tools
@@ -25,7 +42,7 @@ router.post('/test', function(req, res) {   //accepts /api/test
 // const { setTokenCookie } = require('../../utils/auth.js');  //import the funciton
 // const { User } = require('../../db/models');
 
-// router.get('/set-token-cookie', async (_req, res) => {
+// router.get('/set-token-cookie', async (_req, res) => {   //if token cookie containint the JWT exists in dev tools, we are logged in
 //   const user = await User.findOne({
 //     where: {
 //       username: 'Demo-lition'
@@ -40,9 +57,9 @@ router.post('/test', function(req, res) {   //accepts /api/test
 
 // test restoreUser in auth/index.js
 // GET /api/restore-user
-const { restoreUser } = require('../../utils/auth.js');  //import restoreUser
+// const { restoreUser } = require('../../utils/auth.js');  //import restoreUser
 
-router.use(restoreUser);  // use restoreUser middleware
+// router.use(restoreUser);  // use restoreUser middleware
 
 // router.get(
 //   '/restore-user',
