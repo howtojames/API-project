@@ -11,24 +11,24 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
+        primaryKey: true,    //User1  //User2  //User3  //for associations
         type: Sequelize.INTEGER
       },
       firstName: {   //added in phase 5
-        type: Sequelize.STRING(256),
+        type: Sequelize.TEXT,
         allowNull: false   //no unique
       },
       lastName: {    //added in phase 5
-        type: Sequelize.STRING(256),
+        type: Sequelize.TEXT,
         allowNull: false   // no unique
       },
       username: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.TEXT,
         allowNull: false,
         unique: true
       },
       email: {
-        type: Sequelize.STRING(256),
+        type: Sequelize.TEXT,  //changed first four from string to text
         allowNull: false,
         unique: true
       },
