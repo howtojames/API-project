@@ -25,10 +25,10 @@ const validateLogin = [
     check('credential')   //imported middleware
       .exists({ checkFalsy: true })
       .notEmpty()
-      .withMessage('Please provide a valid email or username.'),
+      .withMessage('Email or username is required'), //changed, Please provide a valid email or username.
     check('password')
       .exists({ checkFalsy: true })
-      .withMessage('Please provide a password.'),
+      .withMessage('Password is required'),  //changed, Please provide a password.
     handleValidationErrors   //middleware
 ];
 // It checks to see whether or not req.body.credential and req.body.password are empty. If one of them is empty, then an error will be returned as the response.
@@ -52,10 +52,10 @@ router.post(
       });
 
       if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {  //if the password doens't match, throw an error
-        const err = new Error('Login failed');
-        err.status = 401;
-        err.title = 'Login failed';
-        err.errors = { credential: 'The provided credentials were invalid.' };
+        const err = new Error('Invalid credentials');  //message
+        err.status = 401;  //match the 401 for log in  a user
+        err.title = 'Login failed';  //should be okay
+        // err.errors = { credential: 'The provided credentials were invalid.' };
         return next(err);
       }
 
@@ -94,7 +94,7 @@ router.delete(
 // phase 4
 // GET session user route will return the session user as JSON under the key of user
 // Restore session user   - idk why they say restore session user
-router.get(
+router.get(   //kanban: authenticated user is not required, doesn't require midddleware
     '/',
     (req, res) => {
       const { user } = req;
