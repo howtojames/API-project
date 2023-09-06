@@ -1,6 +1,6 @@
 'use strict';
 
-//phase 3
+
 const { User } = require('../models');
 const bcrypt = require("bcryptjs");
 
@@ -40,7 +40,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
+    return queryInterface.bulkDelete(options, {  //bulkDelete needs options
       username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
     }, {});
   }

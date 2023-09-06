@@ -5,21 +5,48 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
+
+
+      //User1
+      User.hasMany(models.Spot, {
+        foreignKey: 'ownerId',   //checked
+        onDelete: 'CASCADE',
+        hooks: 'true'
+      });
+
+
+      //User2
+      User.hasMany(models.Booking, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: 'true'
+      });
+
+
+      //User3
+      User.hasMany(models.Review, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: 'true'
+      });
+
+
+
     }
   };
 
   User.init(
     {
       firstName: {   //added in phase 5
-        type: DataTypes.STRING(256),
+        type: DataTypes.TEXT,
         allowNull: false   //no unique
       },
       lastName: {    //added in phase 5
-        type: DataTypes.STRING(256),
+        type: DataTypes.TEXT,
         allowNull: false   // no unique
       },
       username: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           len: [4, 30],
@@ -31,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       email: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           len: [3, 256],
