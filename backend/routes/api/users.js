@@ -25,7 +25,7 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.'),
+      .withMessage('Invalid email'),  //changed, Please provide a valid email.
     check('username')
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
@@ -34,10 +34,19 @@ const validateSignup = [
       .not()
       .isEmail()
       .withMessage('Username cannot be an email.'),
+    check('username')                         //added
+      .exists({ checkFalsy: true })
+      .withMessage('Username is required'),
     check('password')
       .exists({ checkFalsy: true })
       .isLength({ min: 6 })
       .withMessage('Password must be 6 characters or more.'),
+    check('firstName')                        //added
+      .exists({ checkFalsy: true})
+      .withMessage('First Name is required'),
+    check('lastName')                         //added
+    .exists({ checkFalsy: true})
+    .withMessage('Last Name is required'),
     handleValidationErrors
 ];
 
@@ -54,6 +63,15 @@ router.post(
     async (req, res) => {
       const { firstName, lastName, email, password, username } = req.body;   //get info
       const hashedPassword = bcrypt.hashSync(password);   //hash password
+
+
+      //query to see if user already exists
+
+      //if user already exists
+      // if(user){
+
+      // }
+
       const user = await User.create({ firstName, lastName, email, username, hashedPassword }); //create user
       //added firstName, lastName accordingly phase 5
 
@@ -71,7 +89,7 @@ router.post(
         user: safeUser
       });
     }
-  );
+);
 //-------------------------------------
 
 
