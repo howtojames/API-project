@@ -1,5 +1,13 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
+//added
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
+//--------------------------------------------
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Spots', {
@@ -64,9 +72,13 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       }
-    });
+    }, options); //added
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Spots');
+    options.tableName = "Spots";   //added and changed below
+    await queryInterface.dropTable(options);
   }
 };
+
+
+//added options on top, on createTable, and used options in down function in dropTable

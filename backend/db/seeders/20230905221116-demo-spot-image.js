@@ -2,7 +2,6 @@
 
 
 const { SpotImage } = require('../models');  //import model accodingly
-const bcrypt = require("bcryptjs");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {

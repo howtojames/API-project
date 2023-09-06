@@ -1,8 +1,7 @@
 'use strict';
 
-//--------------------------------------------
 const { Spot } = require('../models');
-const bcrypt = require("bcryptjs");
+//removed bcrypt and in other files
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -23,6 +22,7 @@ module.exports = {
      * }], {});
     */
 
+    //Model.bulkCreate does not require a schema/options
     //id's will automatically generate
     await Spot.bulkCreate([
       {
