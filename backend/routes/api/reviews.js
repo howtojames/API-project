@@ -76,6 +76,71 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
 
 
 
+//All GETS
+//---------------------------------------
+//Get all Reviews of the Current User
+//Require Authentication: true
+router.get('/current', requireAuth, async (req, res, next) => {
+
+    const userId = req.user.id;
+
+
+    console.log(userId)
+    const reviews = await Review.findAll({
+        where: {
+            userId: userId,
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Spot,
+                attributes: {
+                    exclude: ['description','createdAt', 'updatedAt']
+                }
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    });
+
+    for(let review of reviews){
+        review.dataValues.stars = parseInt(review.dataValues.stars);  //just in case
+        review.dataValues.createdAt = review.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        review.dataValues.updatedAt = review.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+        //review has only one spot, Spot is an object
+        review.dataValues.Spot.dataValues.lat = parseFloat(review.dataValues.Spot.dataValues.lat);
+        review.dataValues.Spot.dataValues.lng = parseFloat(review.dataValues.Spot.dataValues.lng);
+        review.dataValues.Spot.dataValues.price = parseFloat(review.dataValues.Spot.dataValues.price);
+
+        //for that single spot, should be Spot instance, set previewImage
+        const previewImage = await review.dataValues.Spot.getSpotImages({
+            attributes: ['url'],
+            where: {
+                preview: true
+            }
+        });
+        if( previewImage.length === 0 ){
+            review.dataValues.Spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
+        } else if ( previewImage[0].dataValues.url ) {
+            review.dataValues.Spot.dataValues.previewImage = previewImage[0].dataValues.url;
+        }
+    }
+
+
+
+    res.json({
+        Reviews: reviews
+    });
+
+});
+
+
 
 
 
