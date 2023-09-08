@@ -142,7 +142,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     //err handler
     //get the Spot by Id first
-    const spot = await Spot.findByPk(spotId);
+    const spot = await Spot.findByPk(spotId); //THIS IS AN ERROR
     if(!spot){
         res.status(404).json({
             message: "Spot couldn't be found"
