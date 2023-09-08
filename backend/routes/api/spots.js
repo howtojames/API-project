@@ -225,6 +225,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
 //--------------------------------------------
 //All PUT
+//Edit a Spot
 //Require Authentication: true
 router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 
@@ -267,7 +268,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 
         spot.dataValues.lat = parseFloat(spot.dataValues.lat);
         spot.dataValues.lng = parseFloat(spot.dataValues.lng);
-        spot.dataValues.price = parseFloat(spot.dataValues.price);
+        spot.dataValues.price = parseFloat(spot.dataValues.price);  //check this again
 
         res.json(ownerSpot[0]);
     };

@@ -19,6 +19,19 @@ const router = express.Router();
 //---------------------------------------
 
 
+const validateReview = [
+    check('review')
+      .exists({ checkFalsy: true })
+      .withMessage('Review text is required'),
+    check('stars')
+      .exists({ checkFalsy: true})
+      .isInt({ min: 1, max: 5 })
+      .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
+
+
+
 //Add an Image to a Review based on the Review's id
 //Require Authentication: true
 //Review must belong to the current user
@@ -75,9 +88,68 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
 });
 
 
+//ALL PUTS
+//Require Authentication: true
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+
+    const { reviewId } = req.params;
+
+    const { review, stars } = req.body;
+
+    console.log(reviewId, review, stars);
+
+    //check if reviewExists
+    const reviewExists = await Review.findByPk(reviewId);
+    if(!reviewExists){
+        res.status(404).json({
+            message: "Review couldn't be found"
+        });
+    };
+
+
+    const currentUser = await User.findByPk(req.user.id);  //exists
+    const userReviews = await currentUser.getReviews({   //reviews only belong to the currentUser
+        where: {
+            id: reviewId
+        }
+    });
+
+    //if it doen's exist
+    if(userReviews.length === 0){
+        const err = new Error("Review must belong to the current user");
+        err.status = 403; //authorization code
+        next(err);
+    } else if (userReviews.length === 1){  //if owner's spot exists
+        //Spot hasMany SpotImages, so we can use this association method
+
+        await userReviews[0].update({
+            review, stars
+        });  //note if stars or the other put route needs to be changed
+
+
+        userReviews[0].dataValues.createdAt = userReviews[0].dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        userReviews[0].dataValues.updatedAt = userReviews[0].dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+        userReviews[0].dataValues.stars = parseInt(userReviews[0].dataValues.stars);  //stars parseInted here
+        // spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+        // spot.dataValues.price = parseFloat(spot.dataValues.price);
+
+        res.json(userReviews[0]);
+    };
+
+
+});
+
+
 
 //All GETS
 //---------------------------------------
+
+
+
+
+
+
 //Get all Reviews of the Current User
 //Require Authentication: true
 router.get('/current', requireAuth, async (req, res, next) => {
