@@ -468,6 +468,67 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 
+//Get all Bookings for a Spot based on the Spot's id
+//Require Authentication: true
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+
+    const { spotId } = req.params; //parseInt if needed
+
+    const spot = await Spot.findByPk(spotId);
+    if(!spot){
+        res.status(404).json({  //404
+            message: "Spot couldn't be found"
+        });
+    }
+
+
+    if(spot.ownerId === req.user.id){
+        const bookings = await Booking.findAll({
+            include: {
+                model: User,
+                 attributes: ['id', 'firstName', 'lastName']
+            },
+            where: {
+              spotId: spot.id
+            }
+          });
+
+        for (let booking of bookings){
+            booking.dataValues.startDate= booking.dataValues.startDate.toJSON().substring(0, 10);
+            booking.dataValues.endDate = booking.dataValues.endDate.toJSON().substring(0, 10);
+
+            booking.dataValues.createdAt = booking.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+            booking.dataValues.updatedAt = booking.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+        }
+
+        return res.json({
+             Bookings: bookings
+        });
+    } else {  //not the owner of the spot
+
+        const bookings = await Booking.findAll({
+            where: {
+                spotId
+            },
+            attributes: ['startDate', 'endDate']
+        });
+
+        for (let booking of bookings){
+            booking.dataValues.startDate= booking.dataValues.startDate.toJSON().substring(0, 10);
+            booking.dataValues.endDate = booking.dataValues.endDate.toJSON().substring(0, 10);
+        }
+
+        return res.json({
+             Bookings: bookings
+        });
+
+
+    }
+
+
+
+});
+
 
 
 
