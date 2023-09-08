@@ -125,7 +125,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
     newReview.dataValues.createdAt = newReview.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
     newReview.dataValues.updatedAt = newReview.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
 
-    return res.json(newReview);
+    return res.status(201).json(newReview);  //201 in the README
 
 });
 
