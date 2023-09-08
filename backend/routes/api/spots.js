@@ -20,6 +20,11 @@ const sequelize = require('sequelize');
 const router = express.Router();
 //---------------------------------------
 
+//format time
+function formatTimestamp(timestamp) {
+    return timestamp.toJSON().replace('T', ' ').slice(0, 19);
+}
+
 
 
 const validateSpot = [  //kanban checks for email, firstName, and lastNmae
@@ -116,6 +121,9 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
         review,
         stars
     });
+    //format timestamp
+    newReview.dataValues.createdAt = newReview.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+    newReview.dataValues.updatedAt = newReview.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
 
     return res.json(newReview);
 
@@ -199,6 +207,10 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
       //might need to reformat the timestamps
 
+      //change timestamp format
+      spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+      spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
       return res.status(201).json(spot);
     }
 );
@@ -243,7 +255,12 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 
         await ownerSpot[0].update({
             city, address, state, country, lat, lng, name, description, price
-        })
+        });
+
+
+        ownerSpot[0].dataValues.createdAt = ownerSpot[0].dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        ownerSpot[0].dataValues.updatedAt = ownerSpot[0].dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
 
         res.json(ownerSpot[0]);
     };
@@ -290,6 +307,11 @@ router.get('/current', requireAuth, async (req, res) => {
         } else if ( previewImage[0].dataValues.url ) {
             spot.dataValues.previewImage = previewImage[0].dataValues.url;
         }
+
+        //from index 0 to 18
+        spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
     }; //now each value in allSpots is added aggregate data
 
 
@@ -312,7 +334,8 @@ router.get('/:spotId', async (req, res) => {
     const spot = await Spot.findByPk(spotId, {  //assocaited to SpotImage, and User
         include: [
             {
-                model: SpotImage  //add attributes
+                model: SpotImage,
+                attributes: ['id', 'url', 'preview'] //i cri
             },
             {
                 model: User,
@@ -327,22 +350,39 @@ router.get('/:spotId', async (req, res) => {
         });
     };
 
-    //same as other endpoint
+    //aveRating
     const avgRating = await spot.getReviews({
         attributes: [
             [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
         ]
     });
-    const previewImage = await spot.getSpotImages({
-        attributes: ['url'],
-        where: {
-            preview: true
-        }
-    });
-
     spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;  //want to change all null values to 0
-    spot.dataValues.previewImage = previewImage[0].dataValues.url;
-    console.log(spot);
+
+    const numReviews = await spot.getReviews({
+        attributes: [
+            [sequelize.fn('COUNT', sequelize.col('id')), 'numReviews']
+        ]
+    });
+    spot.dataValues.numReviews = numReviews[0].dataValues.numReviews? numReviews[0].dataValues.numReviews : 0;
+
+
+
+    //format timestamp
+    spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+    spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+    //change to Owner key, delete User key
+    spot.dataValues.Owner = spot.dataValues.User;
+    delete spot.dataValues.User;
+
+    //console.log(spot.SpotImages)
+    //go into each object, and then get each dataValue to get the key
+    //i cri
+    // for(let image of spot.SpotImages){
+    //     //console.log(image.dataValues.createdAt)
+    //     image.dataValues.createdAt = image.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+    //     image.dataValues.updatedAt = image.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+    // }
 
     res.json(spot);
 });
@@ -393,11 +433,9 @@ router.get('/', async (req, res) => {
             spot.dataValues.previewImage = previewImage[0].dataValues.url;
         }
 
-        //console.log('previewImage assigned');
-        // console.log(previewImage[0])
-        // console.log(`end of loop ${i}`);
-        //i++;
-    }; //end of for of loop
+        spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+    };
 
     return res.json(
         {
@@ -459,21 +497,32 @@ module.exports = router;
 
 
 
-// const avgRating = await spot.getReviews({
+// const avgRating = await spot.getReviews({  //avgRating
 //     attributes: [
 //         [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
 //     ]
 // });
-// const previewImage = await spot.getSpotImages({
+// spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;
+
+
+
+// const previewImage = await spot.getSpotImages({  //previewImage
 //     attributes: ['url'],
 //     where: {
 //         preview: true
 //     }
 // });
-// //set values
-// spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;
 // if( previewImage.length === 0 ){
 //     spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
 // } else if ( previewImage[0].dataValues.url ) {
 //     spot.dataValues.previewImage = previewImage[0].dataValues.url;
 // }
+
+
+
+// const numReviews = await spot.getReviews({
+//     attributes: [
+//         [sequelize.fn('COUNT', sequelize.col('id')), 'numReviews']
+//     ]
+// });
+// spot.dataValues.numReviews = numReviews[0].dataValues.numReviews? numReviews[0].dataValues.numReviews : 0;
