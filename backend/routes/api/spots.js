@@ -211,6 +211,10 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
       spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
       spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
 
+      spot.dataValues.lat = parseFloat(spot.dataValues.lat);
+      spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+      spot.dataValues.price = parseFloat(spot.dataValues.price);
+
       return res.status(201).json(spot);
     }
 );
@@ -301,8 +305,11 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         });
 
-
-        spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating.toFixed(1) : 0;
+        if(avgRating[0].dataValues.avgRating === null){
+            spot.dataValues.avgRating = 0;
+        } else {
+            spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
+        }
         if( previewImage.length === 0 ){
             spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
         } else if ( previewImage[0].dataValues.url ) {
@@ -312,6 +319,14 @@ router.get('/current', requireAuth, async (req, res) => {
         //from index 0 to 18
         spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
         spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+
+        spot.dataValues.lat = parseFloat(spot.dataValues.lat);
+        spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+        spot.dataValues.price = parseFloat(spot.dataValues.price);
+
+
+
 
     }; //now each value in allSpots is added aggregate data
 
