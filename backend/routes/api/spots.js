@@ -269,7 +269,6 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
         spot.dataValues.lng = parseFloat(spot.dataValues.lng);
         spot.dataValues.price = parseFloat(spot.dataValues.price);
 
-
         res.json(ownerSpot[0]);
     };
 
