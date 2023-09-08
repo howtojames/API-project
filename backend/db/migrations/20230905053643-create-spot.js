@@ -19,7 +19,7 @@ module.exports = {
       },
       ownerId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false,       //this constraint worked
         references: {  //User1
           model: 'Users',
           key: 'id'

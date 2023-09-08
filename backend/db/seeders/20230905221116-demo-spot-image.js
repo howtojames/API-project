@@ -30,7 +30,7 @@ module.exports = {
       {
         spotId: 1,
         url: "https://airbnb.com/spot1_image2.jpg",
-        preview: true
+        preview: false  //from the documentation it only wants one previewImage url, beucase it doesn't have an array
       },
       {
         spotId: 2,

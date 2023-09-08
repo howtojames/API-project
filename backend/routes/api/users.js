@@ -21,7 +21,7 @@ const router = express.Router();
 
 // added on phase 5
 // POST /api/users signup route will expect the body of the request to have a key of username, email, and password with the password of the user being created.
-const validateSignup = [
+const validateSignup = [  //kanban checks for email, firstName, and lastNmae
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()

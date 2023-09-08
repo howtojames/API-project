@@ -24,7 +24,7 @@ module.exports = {
       {
         spotId: 1,
         userId: 1,
-        startDate: new Date('2023-09-15'),
+        startDate: new Date('2023-09-15'),   //you don't have defaultValues for these
         endDate: new Date('2023-09-25'),
       },
       {
