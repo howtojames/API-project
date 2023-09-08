@@ -6,7 +6,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 
 const { requireAuth } = require('../../utils/auth');  //called below, same path for users.js
-const { Spot, SpotImage, User, Review, ReviewImage } = require('../../db/models');  //changed
+const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../db/models');  //changed
 //---------------------------------------
 // phase 5
 const { check } = require('express-validator');
@@ -15,15 +15,12 @@ const { all } = require('./session');
 
 //---------------------------------------
 //for aggregate functions
-const sequelize = require('sequelize');
+const { sequelize, Op } = require('sequelize');
 
 const router = express.Router();
 //---------------------------------------
 
-//format time
-function formatTimestamp(timestamp) {
-    return timestamp.toJSON().replace('T', ' ').slice(0, 19);
-}
+
 
 
 
@@ -74,6 +71,22 @@ const validateReview = [
       .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ];
+
+
+const validateBooking = [
+    check('endDate')
+      .exists({ checkFalsy: true })
+      .custom((value, { req }) => {
+        const startDate = new Date(req.body.startDate).getTime();   //wk13 monday
+        const endDate = new Date(value).getTime();
+        return endDate <= startDate ? false : true;  //if endDate is before startDate, return false
+      })
+      .withMessage('endDate cannot be on or before startDate'),
+    handleValidationErrors
+];
+
+
+
 
 
 //Create a Review for a Spot based on the Spot's id
@@ -186,9 +199,74 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         res.json(body);
     };
 
+});
 
+
+//Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
+
+    const { spotId } = req.params;
+
+    const { startDate, endDate } = req.body;
+
+    //check if spot exists
+    const spot = await Spot.findByPk(spotId);
+    if(!spot){
+        res.status(404).json({
+            message: "Spot couldn't be found"
+        });
+    };
+
+    //spot from above has an ownerId, compare it to req.user.id
+    if (spot.ownwerId === req.user.id) {
+        const err = new Error("Spot must NOT belong to the current user")
+        err.status = 403;  //authorization code
+        next(err);
+    }
+
+    //check if booking has a conflicting
+    const bookingConflict = await Booking.findOne({  //booking has spotId
+        where: {
+            spotId,
+            startDate: {
+                [Op.lte]: new Date(endDate) //that booking startDate's earlier than user input's endDate
+            },
+            endDate: {
+                [Op.gte]: new Date(startDate)  //that booking endDate's earlier than user input's endDate
+            }
+        }
+    }); //can also do findAll
+    if (bookingConflict) {
+        res.status(403).json({
+            message: "Sorry, this spot is already booked for the specified dates",
+            errors: {
+              startDate: "Start date conflicts with an existing booking",
+              endDate: "End date conflicts with an existing booking"
+            }
+        });
+    };
+
+
+
+    //create a booking
+    const booking = await Booking.create({
+        spotId: parseInt(spotId),
+        userId: req.user.id,
+        startDate,
+        endDate
+    })
+
+    booking.dataValues.createdAt = booking.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+    booking.dataValues.updatedAt = booking.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+    booking.dataValues.startDate= booking.dataValues.startDate.toJSON().substring(0, 10)
+    booking.dataValues.endDate = booking.dataValues.endDate.toJSON().substring(0, 10)
+
+
+    res.json(booking);
 
 });
+
 
 
 //---------------------------------------
@@ -390,6 +468,9 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 
+
+
+
 //GET Details of a Spot from an id
 //Require Authentication: false, no middleware needed
 router.get('/:spotId', async (req, res) => {
@@ -571,7 +652,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
         //kanban: Only the owner of the spot is authorized to edit
         const err = new Error("Spot must belong to the current user");
         err.status = 403; //authorization code
-        next(err); //pass to errir
+        next(err); //pass to err
     } else if (ownerSpot.length === 1){  //if owner's spot exists
         //Spot hasMany SpotImages, so we can use this association method
 
