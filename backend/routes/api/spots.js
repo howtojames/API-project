@@ -103,7 +103,8 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
     //userReview is an array of sequelize Review instances
     //if it's 1 (or greate, shouldn't be)
     if(userReview.length >= 1){
-        return res.status(500).json({
+        //403 or 500 both accepted
+        return res.status(403).json({
             message: "User already has a review for this spot"
         });
     };
@@ -262,17 +263,42 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 //Require Authentication: true
 router.get('/current', requireAuth, async (req, res) => {
 
-    //get current userId
-    const currentUserId = req.user.id;
-    //get currentUser/Owner
-    const userSpots = await User.findByPk(currentUserId, {
-        include: {
-            model: Spot  //User hasMany Spot
-        },
-        attributes: [] //exclude all attributes, except Spot
+    const userId = req.user.id;
+
+    const allSpots = await Spot.findAll({
+        where: {
+            ownerId: userId
+        }
     });
 
-    res.json(userSpots)
+    for(let spot of allSpots){
+        const avgRating = await spot.getReviews({
+            attributes: [
+                [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
+            ]
+        });
+        const previewImage = await spot.getSpotImages({
+            attributes: ['url'],
+            where: {
+                preview: true
+            }
+        });
+
+        spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;
+        if( previewImage.length === 0 ){
+            spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
+        } else if ( previewImage[0].dataValues.url ) {
+            spot.dataValues.previewImage = previewImage[0].dataValues.url;
+        }
+    }; //now each value in allSpots is added aggregate data
+
+
+    return res.json(
+        {
+            Spots: allSpots
+        }
+    );
+
 });
 
 
@@ -321,10 +347,7 @@ router.get('/:spotId', async (req, res) => {
     res.json(spot);
 });
 
-
-
-
-// GET all Spots
+// get all Spots
 // including aggregate data
 router.get('/', async (req, res) => {
 
@@ -425,10 +448,32 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             res.json('something went wrong with deleting')
         }
 
-
     };
 
 });
 
 
 module.exports = router;
+
+
+
+
+
+// const avgRating = await spot.getReviews({
+//     attributes: [
+//         [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
+//     ]
+// });
+// const previewImage = await spot.getSpotImages({
+//     attributes: ['url'],
+//     where: {
+//         preview: true
+//     }
+// });
+// //set values
+// spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;
+// if( previewImage.length === 0 ){
+//     spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
+// } else if ( previewImage[0].dataValues.url ) {
+//     spot.dataValues.previewImage = previewImage[0].dataValues.url;
+// }
