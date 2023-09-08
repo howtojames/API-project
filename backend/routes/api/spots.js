@@ -301,6 +301,7 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         });
 
+
         spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating.toFixed(1) : 0;
         if( previewImage.length === 0 ){
             spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
@@ -424,7 +425,15 @@ router.get('/', async (req, res) => {
         //console.log('before assigning values');
         //add key:value to that spot
         //again, spot is a sequelize model instance
-        spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;  //want to change all null values to 0
+
+        //console.log(typeof avgRating[0].dataValues.avgRating);
+        if(avgRating[0].dataValues.avgRating === null){
+            spot.dataValues.avgRating = 0;
+        } else {
+            spot.dataValues.avgRating = avgRating[0].dataValues.avgRating;
+        }
+
+
         //console.log(`loop ${i} before previewImage`);
 
         if( previewImage.length === 0 ){
