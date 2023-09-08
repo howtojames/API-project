@@ -301,7 +301,7 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         });
 
-        spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;
+        spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating.toFixed(1) : 0;
         if( previewImage.length === 0 ){
             spot.dataValues.previewImage = "no url exists, create a SpotImage url with preview true for the Spot";
         } else if ( previewImage[0].dataValues.url ) {
