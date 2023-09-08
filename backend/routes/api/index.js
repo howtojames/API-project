@@ -8,6 +8,7 @@ const usersRouter = require('./users.js');
 
 const spotsRouter = require('./spots.js');  //added
 const reviewsRouter = require('./reviews.js');
+const bookingRouter = require('./bookings.js');
 //----------------------------------------
 // moved form bottom to top in phase 3
 const { restoreUser } = require('../../utils/auth.js');  //import restoreUser from utils/auth.js, its a utility middleware
@@ -23,6 +24,8 @@ router.use('/users', usersRouter);
 router.use('/spots', spotsRouter); //added, same naming convention. good check
 
 router.use('/reviews', reviewsRouter); //added
+
+router.use('/bookings', bookingRouter);
 
 //----------------------------------------
 
