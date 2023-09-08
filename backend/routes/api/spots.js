@@ -340,7 +340,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
-//GET details of a Spot from an id
+//GET Details of a Spot from an id
 //Require Authentication: false, no middleware needed
 router.get('/:spotId', async (req, res) => {
 
@@ -372,20 +372,34 @@ router.get('/:spotId', async (req, res) => {
             [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
         ]
     });
-    spot.dataValues.avgRating = avgRating[0].dataValues.avgRating ? avgRating[0].dataValues.avgRating : 0;  //want to change all null values to 0
+    if(avgRating[0].dataValues.avgRating === null){
+        spot.dataValues.avgRating = 0;
+    } else {
+        spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
+    };
+
 
     const numReviews = await spot.getReviews({
         attributes: [
             [sequelize.fn('COUNT', sequelize.col('id')), 'numReviews']
         ]
     });
-    spot.dataValues.numReviews = numReviews[0].dataValues.numReviews? numReviews[0].dataValues.numReviews : 0;
+    if(numReviews[0].dataValues.numReviews === null){
+        spot.dataValues.numReviews = 0;
+    } else {
+        spot.dataValues.numReviews = parseInt(numReviews[0].dataValues.numReviews)
+    };
+
 
 
 
     //format timestamp
     spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
     spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+    spot.dataValues.lat = parseFloat(spot.dataValues.lat);
+    spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+    spot.dataValues.price = parseFloat(spot.dataValues.price);
 
     //change to Owner key, delete User key
     spot.dataValues.Owner = spot.dataValues.User;
@@ -403,7 +417,7 @@ router.get('/:spotId', async (req, res) => {
     res.json(spot);
 });
 
-// get all Spots
+// Get All Spots
 // including aggregate data
 router.get('/', async (req, res) => {
 
@@ -442,11 +456,14 @@ router.get('/', async (req, res) => {
         //again, spot is a sequelize model instance
 
         //console.log(typeof avgRating[0].dataValues.avgRating);
+
+
         if(avgRating[0].dataValues.avgRating === null){
             spot.dataValues.avgRating = 0;
         } else {
             spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
-        }
+        };
+
 
 
         //console.log(`loop ${i} before previewImage`);
