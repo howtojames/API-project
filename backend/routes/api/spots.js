@@ -265,6 +265,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
         ownerSpot[0].dataValues.createdAt = ownerSpot[0].dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
         ownerSpot[0].dataValues.updatedAt = ownerSpot[0].dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
 
+        spot.dataValues.lat = parseFloat(spot.dataValues.lat);
+        spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+        spot.dataValues.price = parseFloat(spot.dataValues.price);
 
         res.json(ownerSpot[0]);
     };
