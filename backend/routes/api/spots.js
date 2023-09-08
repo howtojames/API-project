@@ -430,7 +430,7 @@ router.get('/', async (req, res) => {
         if(avgRating[0].dataValues.avgRating === null){
             spot.dataValues.avgRating = 0;
         } else {
-            spot.dataValues.avgRating = avgRating[0].dataValues.avgRating;
+            spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
         }
 
 
@@ -444,6 +444,10 @@ router.get('/', async (req, res) => {
 
         spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
         spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+
+        spot.dataValues.lat = parseFloat(spot.dataValues.lat);
+        spot.dataValues.lng = parseFloat(spot.dataValues.lng);
+        spot.dataValues.price = parseFloat(spot.dataValues.price);
     };
 
     return res.json(
