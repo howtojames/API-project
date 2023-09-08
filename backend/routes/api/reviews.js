@@ -215,6 +215,52 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+
+    const { reviewId } = req.params;  //BIG RIP, not req.body
+
+    const review = await Review.findByPk(reviewId);
+    if(!review){
+        return res.status(404).json({  //can't find spot
+            message: "Review couldn't be found"
+        });
+    };
+
+    //get current User
+    const currentUser = await User.findByPk(req.user.id);
+
+    const userReviews = await currentUser.getReviews({   //reviews only belong to the currentUser
+        where: {
+            id: reviewId
+        }
+    });
+
+    //if spot doesn't exist
+    if(userReviews.length === 0){
+        const err = new Error("Review must belong to the current user");
+        err.status = 403; //authorization code
+        return next(err);
+    } else if (userReviews.length >= 1){  //could have more than 1 review
+        //Spot hasMany SpotImages, so we can use this association method
+
+        //delete
+        try {
+            await userReviews[0].destroy();
+            return res.json({
+                message: "Successfully deleted"
+            });
+        } catch (e) {
+            return res.json('something went wrong with deleting')
+        }
+
+    };
+
+});
+
+
+
+
+
 
 
 
