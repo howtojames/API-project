@@ -6,7 +6,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 
 const { requireAuth } = require('../../utils/auth');  //called below, same path for users.js
-const { Spot, SpotImage, User, Review } = require('../../db/models');  //changed
+const { Spot, SpotImage, User, Review, ReviewImage } = require('../../db/models');  //changed
 //---------------------------------------
 // phase 5
 const { check } = require('express-validator');
@@ -142,7 +142,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     //err handler
     //get the Spot by Id first
-    const spot = await Spot.findByPk(spotId); //THIS IS AN ERROR
+    const spot = await Spot.findByPk(spotId); //This is spot's id
     if(!spot){
         res.status(404).json({
             message: "Spot couldn't be found"
@@ -337,6 +337,52 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json(
         {
             Spots: allSpots
+        }
+    );
+
+});
+
+
+//Get all Reviews by a Spot's id
+//Require Authentication: false
+router.get('/:spotId/reviews', async (req, res, next) => {
+
+    const { spotId } = req.params;  //remember to paraseInt
+
+    //check if spot exists
+    const spot = await Spot.findByPk(spotId);
+    if(!spot){
+        res.status(404).json({  //404
+            message: "Spot couldn't be found"
+        });
+    }
+
+    const reviews = await Review.findAll({
+        where: {
+            spotId: spotId
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    })
+
+    //go through each review
+    for(let review of reviews){
+        review.dataValues.stars = parseInt(review.dataValues.stars);  //just in case
+        review.dataValues.createdAt = review.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
+        review.dataValues.updatedAt = review.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
+    }
+
+    res.json(
+        {
+            Reviews: reviews
         }
     );
 
