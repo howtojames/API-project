@@ -401,6 +401,10 @@ router.get('/:spotId', async (req, res) => {
     spot.dataValues.lng = parseFloat(spot.dataValues.lng);
     spot.dataValues.price = parseFloat(spot.dataValues.price);
 
+    for(let image of spot.SpotImages){
+        image.dataValues.preview = Boolean(image.dataValues.preview)
+    }
+
     //change to Owner key, delete User key
     spot.dataValues.Owner = spot.dataValues.User;
     delete spot.dataValues.User;
