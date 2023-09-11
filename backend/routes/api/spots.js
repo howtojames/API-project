@@ -6,16 +6,18 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 
 const { requireAuth } = require('../../utils/auth');  //called below, same path for users.js
-const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../db/models');  //changed
+const { Spot, SpotImage, User, Review, ReviewImage, Booking, sequelize } = require('../../db/models');  //changed
+//need sequelize to be imported here or else sequelize' fn would not work
 //---------------------------------------
 // phase 5
 const { check } = require('express-validator');
+const { query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');  //imported from utilities validation.js
 const { all } = require('./session');
 
 //---------------------------------------
 //for aggregate functions
-const { sequelize, Op } = require('sequelize');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 //---------------------------------------
@@ -82,6 +84,39 @@ const validateBooking = [
         return endDate <= startDate ? false : true;  //if endDate is before startDate, return false
       })
       .withMessage('endDate cannot be on or before startDate'),
+    handleValidationErrors
+];
+
+
+const validatePagination = [
+    query('page')                //query must be used for query strings
+        .optional()
+        .isInt({ min: 1})
+        .withMessage('Page must be greater than or equal to 1'),
+    query('size')
+        .optional()
+        .isInt({ min: 1})
+        .withMessage('Size must be greater than or equal to 1'),
+    query('minLat')
+        .optional().isFloat({ min: -90 })                         //isFloat starting here
+        .withMessage('Minimum latitude is invalid'),
+    query('maxLat')
+        .optional().isFloat({ max: 90 })
+        .withMessage('Maximum latitude is invalid'),
+    query('minLng')
+        .optional().isFloat({ min: -180})                         //max longitude
+        .withMessage('Minimum longitude is invalid'),
+    query('maxLng')
+        .optional().isFloat({ max: 180 })
+        .withMessage('Maximum longitude is invalid'),
+    query('minPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("Minimum price must be greater than or equal to 0"),
+    query('maxPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("Maximum price must be greater than or equal to 0"),
     handleValidationErrors
 ];
 
@@ -361,7 +396,6 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 // changed order
 //-------------------------------------
 
-
 //Get all Spots owned by the Current User
 //Require Authentication: true
 router.get('/current', requireAuth, async (req, res) => {
@@ -420,7 +454,6 @@ router.get('/current', requireAuth, async (req, res) => {
     );
 
 });
-
 
 //Get all Reviews by a Spot's id
 //Require Authentication: false
@@ -481,7 +514,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
         });
     }
 
-
+    //if that spot's owner is equal to the current user
+    //if the curent use/YOU are/is the owner
     if(spot.ownerId === req.user.id){
         const bookings = await Booking.findAll({
             include: {
@@ -510,7 +544,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
             where: {
                 spotId
             },
-            attributes: ['startDate', 'endDate']
+            attributes: ['spotId', 'startDate', 'endDate']
         });
 
         for (let booking of bookings){
@@ -528,7 +562,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 
 });
-
 
 
 
@@ -583,8 +616,6 @@ router.get('/:spotId', async (req, res) => {
     };
 
 
-
-
     //format timestamp
     spot.dataValues.createdAt = spot.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
     spot.dataValues.updatedAt = spot.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
@@ -615,17 +646,55 @@ router.get('/:spotId', async (req, res) => {
 
 // Get All Spots
 // including aggregate data
-router.get('/', async (req, res) => {
+router.get('/', validatePagination, async (req, res) => {
 
-    //returns an array
-    const allSpots = await Spot.findAll();
-    //console.log("type", typeof allSpots);
-    //change it from promise to json
-    //const allSpotsJSON = allSpots.toJSON();
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-    //console.log('allSpots', allSpots[0].id)
-    //let i = 1;
-    //go through each spot in allSpots
+    page = parseInt(page);
+    size = parseInt(size);
+    minLat = parseFloat(minLat);
+    maxLat = parseFloat(maxLat);
+    minLng = parseFloat(minLng);
+    maxLng = parseFloat(maxLng);
+    minPrice = parseFloat(minPrice);
+    maxPrice = parseFloat(maxPrice);
+
+    if(!page) page = 1;
+    if(!size) size = 20;
+    if(page < 1) page = 1;
+    if(size < 1) size = 1;
+    if(page > 10) page = 10;
+    if(size > 20) page = 20;
+    if(minPrice < 0) minPrice = 0;
+    if(maxPrice < 0) maxPrice = 0;
+
+    const pagination = {}; //populate object
+    if(page >= 1 && size >= 1){
+        pagination.limit = size;
+        pagination.offset = (page - 1) * size;
+    }
+
+    const where = {};
+    //optional, check if it exists
+    if (minLat)
+        where.lat = { [Op.gte]: minLat }
+    if (maxLat)
+        where.lat = { [Op.lte]: maxLat }
+    if (minLng)
+        where.lng = { [Op.gte]: minLng }
+    if (maxLng)
+        where.lng = { [Op.lte]: maxLng }
+    if (minPrice)
+        where.price = { [Op.gte]: minPrice }
+    if (maxPrice)
+        where.price = { [Op.lte]: maxPrice }
+
+
+    const allSpots = await Spot.findAll({
+        where,
+        ...pagination
+    });
+
     for(let spot of allSpots){
         // forEach spot, calcualte the avgRating, and get all previewImage associated to
         //review is associated to Spot, use spot.get< > , tuesday long practice
@@ -680,7 +749,9 @@ router.get('/', async (req, res) => {
 
     return res.json(
         {
-            Spots: allSpots
+            Spots: allSpots,
+            page,
+            size
         }
     );  //wants an body with object and and then Spots: array of objects
 
@@ -730,6 +801,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     };
 
 });
+
 
 
 module.exports = router;
