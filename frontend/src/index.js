@@ -1,5 +1,4 @@
 //phase 0
-
 // frontend/src/index.js
 import React from 'react';
 
@@ -12,14 +11,31 @@ import App from './App';   //App
 
 import configureStore from './store';   //connect the store to React
 
+//---------------------------------------------
+// ... other imports
+// phase 0 part 2
+import { restoreCSRF, csrfFetch } from './store/csrf';
+//---------------------------------------------
+// phase 1
+//import from session.js
+import * as sessionActions from "./store/session";
+
 
 //-------------------------------------------
-
+// phase 1
 //create a variable to access store on the window
 const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
+  //-------------
+  restoreCSRF();   //added here, phase 0 part 2
+
+  window.csrfFetch = csrfFetch;  //added here, phase 0 part 2
+  //-------------
   window.store = store;
+  //-------------
+  //phase 1s
+  window.sessionActions = sessionActions;
 }
 
 //-------------------------------------------
