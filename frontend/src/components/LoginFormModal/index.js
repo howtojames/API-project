@@ -1,36 +1,46 @@
-// frontend/src/components/LoginFormPage/index.js
+//changed in phase 4
+// frontend/src/components/LoginFormModal/index.js
 
 //phase 1
 import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+//removed in phase 4
+//import { Redirect } from "react-router-dom";
 //------------------------------------------
 
 import "./LoginForm.css";
 
 //------------------------------------------
+//phase 4 - debugged
+import { useModal } from "../../context/Modal";
 
 ///add a React functional component named LoginFormPage
-function LoginFormPage() {
+//changed in phase 4
+function LoginFormModal() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  //phase 4
+  const { closeModal } = useModal();
 
   //If there is a current session user in the Redux store, then redirect the user to the "/" path if trying to access the LoginFormPage
-  if (sessionUser) return <Redirect to="/" />;
+  //if (sessionUser) return <Redirect to="/" />;
+  //removed in phase 4
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)  //.then and .catch added in phase 4
+      .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      }
-    );
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
   };
 
   //Render a form with a controlled input for
@@ -67,4 +77,5 @@ function LoginFormPage() {
 }
 
 //LoginFormPage component at the bottom of the file, then render it in App.js at the "/login" route.
-export default LoginFormPage;
+export default LoginFormModal;
+//changed in phase 4

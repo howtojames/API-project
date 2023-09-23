@@ -7,6 +7,10 @@ import * as sessionActions from '../../store/session';
 //----------------------------------------------------
 //phase 3
 import './Navigation.css';
+//----------------------------------------------------
+//phase 4
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -28,9 +32,13 @@ function Navigation({ isLoaded }){
       </li>
     );
   } else {
+    //replaced Navlink in phase 4
     sessionLinks = (
       <li>
-        <NavLink to="/login" className='nav-link'>Log In</NavLink>
+        <OpenModalButton
+          buttonText="Log In"
+          modalComponent={<LoginFormModal />}
+        />
         <NavLink to="/signup" className='nav-link'>Sign Up</NavLink>
       </li>
     );

@@ -3,7 +3,8 @@
 //phase 1
 //import React from "react"; //restore user
 import { Route, Switch } from "react-router-dom";
-import LoginFormPage from "./components/LoginFormPage";
+//removed in phase 4
+//import LoginFormPage from "./components/LoginFormPage";
 //------------------------------------------
 //phase 1 - restore users
 import React, { useState, useEffect } from "react";
@@ -30,14 +31,12 @@ function App() {
   //added isLoaded in phase 1
   //added /signup in phase 2
   //added Navigation in phase 3
+  //removed LoginFormPage in phase 4
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/login">
-            <LoginFormPage />
-          </Route>
           <Route path="/signup">
             <SignupFormPage />
           </Route>

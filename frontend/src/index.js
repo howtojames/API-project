@@ -20,6 +20,12 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 //import from session.js
 import * as sessionActions from "./store/session";
 
+//---------------------------------------------
+//phase 4
+import { ModalProvider, Modal } from "./context/Modal";
+
+
+
 
 //-------------------------------------------
 // phase 1
@@ -42,13 +48,18 @@ if (process.env.NODE_ENV !== 'production') {
 
 //Root functional component
 //pass in the key of store with store's value
+//phase 4 - wrapped the Modal Provider around the Provider
+//phase 4 - added modal
 function Root() {
     return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+      <ModalProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+            <Modal />
+          </BrowserRouter>
+        </Provider>
+      </ModalProvider>
     );
 }
 
