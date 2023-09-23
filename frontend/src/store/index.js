@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 //---------------------------------------
 //phase 1
 import sessionReducer from "./session";
-
+//phase 1
 //create rootReducer
 const rootReducer = combineReducers({
   session: sessionReducer,

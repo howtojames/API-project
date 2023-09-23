@@ -63,7 +63,48 @@ export const restoreUser = () => async (dispatch) => {
 
 
 //-----------------------------------------
+//phase 2
+//add a signup thunk action that will hit the signup backend route
+//with username, firstName, lastName, email, and password inputs.
+export const signup = (user) => async (dispatch) => {
+  const { username, firstName, lastName, email, password } = user;
+  const response = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify({
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    }),
+  });
+  //After the response from the AJAX call comes back, parse the JSON body of the response,
+  //and dispatch the action for setting the session user to the user in the response's body.
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
 
+
+//-----------------------------------------
+
+
+
+//-----------------------------------------
+
+//phase 3
+//logout thunk action
+export const logout = () => async (dispatch) => {
+  const response = await csrfFetch('/api/session', {
+    method: 'DELETE',
+  });
+  dispatch(removeUser());
+  return response;
+};
+//window.store.dispatch(window.sessionActions.logout());
+//works!
+
+//-----------------------------------------
 const initialState = { user: null };
 
 
@@ -103,7 +144,7 @@ export default sessionReducer;
 //     }
 //  }
 
-//   no session user,
+//   if no session user,
 //   session slice of state
 //   {
 //     user: null
