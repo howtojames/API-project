@@ -4,18 +4,17 @@
 //import React from "react"; //restore user
 import { Route, Switch } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage";
-
 //------------------------------------------
 //phase 1 - restore users
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "./store/session";
-
 //------------------------------------------
 //phase 2
 import SignupFormPage from "./components/SignupFormPage";
-
-
+//------------------------------------------
+//phase 3
+import Navigation from "./components/Navigation";
 
 
 //then render App.js at the "/login" route.
@@ -30,17 +29,21 @@ function App() {
 
   //added isLoaded in phase 1
   //added /signup in phase 2
+  //added Navigation in phase 3
   return (
-    isLoaded && (
-      <Switch>
-        <Route path="/login">
-          <LoginFormPage />
-        </Route>
-        <Route path="/signup">
-          <SignupFormPage />
-        </Route>
-      </Switch>
-    )
+    <>
+      <Navigation isLoaded={isLoaded} />
+      {isLoaded && (
+        <Switch>
+          <Route path="/login">
+            <LoginFormPage />
+          </Route>
+          <Route path="/signup">
+            <SignupFormPage />
+          </Route>
+        </Switch>
+    )}
+  </>
   );
 }
 
