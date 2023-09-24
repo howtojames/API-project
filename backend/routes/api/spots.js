@@ -636,7 +636,7 @@ router.get('/:spotId', async (req, res) => {
     //go into each object, and then get each dataValue to get the key
     //i cri
     // for(let image of spot.SpotImages){
-    //     //console.log(image.dataValues.createdAt)
+    //     console.log(image.dataValues.createdAt)
     //     image.dataValues.createdAt = image.dataValues.createdAt.toJSON().replace('T', ' ').slice(0, 19);
     //     image.dataValues.updatedAt = image.dataValues.updatedAt.toJSON().replace('T', ' ').slice(0, 19);
     // }

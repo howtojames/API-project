@@ -58,9 +58,9 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
     //Review must belong to the current user
     //each user can have one review
 
-    console.log('currentUser.id', currentUser.id); //5
-    console.log('review.userId', review.userId)  //5
-    console.log('review.id', review.id)  //4
+    // console.log('currentUser.id', currentUser.id); //5
+    // console.log('review.userId', review.userId)  //5
+    // console.log('review.id', review.id)  //4
     // /reviews/4/images for revieId
     if(currentUser.id === review.userId){
         //then get that user's review's images
@@ -96,7 +96,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
 
     const { review, stars } = req.body;
 
-    console.log(reviewId, review, stars);
+    //console.log(reviewId, review, stars);
 
     //check if reviewExists
     const reviewExists = await Review.findByPk(reviewId);
@@ -157,7 +157,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
 
-    console.log(userId)
+    //console.log(userId)
     const reviews = await Review.findAll({
         where: {
             userId: userId,
