@@ -1,7 +1,13 @@
 // frontend/src/components/SignupFormPage/index.js
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+//removed useselectors
+import { useDispatch } from "react-redux";
+//-
+//phase 4
+import { useModal } from "../../context/Modal";
+//-
+//Removed in phase 4
+//import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
 //----------------------------------------
@@ -10,7 +16,8 @@ import "./SignupForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  //removed in phase 4
+  //const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -18,8 +25,12 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  //added inphase 4
+  const { closeModal } = useModal();
 
-  if (sessionUser) return <Redirect to="/" />;
+
+  //removed in phase 4
+  //if (sessionUser) return <Redirect to="/" />;
 
   //On submit of the form, validate that the confirm password is the same as the password fields,
 
@@ -36,7 +47,9 @@ function SignupFormPage() {
           lastName,
           password,
         })
-      ).catch(async (res) => {
+      )
+      .then(closeModal)   //added in phase 4 while converting from Page to Modal
+      .catch(async (res) => {
         //handle and display errors from the signup thunk action if there are any
         const data = await res.json();
         //

@@ -2,7 +2,8 @@
 
 //phase 1
 //import React from "react"; //restore user
-import { Route, Switch } from "react-router-dom";
+//removed Route in phase 4
+import { Switch } from "react-router-dom";
 //removed in phase 4
 //import LoginFormPage from "./components/LoginFormPage";
 //------------------------------------------
@@ -12,7 +13,8 @@ import { useDispatch } from "react-redux";
 import * as sessionActions from "./store/session";
 //------------------------------------------
 //phase 2
-import SignupFormPage from "./components/SignupFormPage";
+//renamed in phase 4
+//import SignupFormModal from "./components/SignupFormModal";
 //------------------------------------------
 //phase 3
 import Navigation from "./components/Navigation";
@@ -32,16 +34,11 @@ function App() {
   //added /signup in phase 2
   //added Navigation in phase 3
   //removed LoginFormPage in phase 4
+  //remoed SignupFormpage Route
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
-        <Switch>
-          <Route path="/signup">
-            <SignupFormPage />
-          </Route>
-        </Switch>
-    )}
+      {isLoaded && <Switch></Switch>}
   </>
   );
 }

@@ -10,7 +10,6 @@ import { BrowserRouter } from 'react-router-dom';   //router
 import App from './App';   //App
 
 import configureStore from './store';   //connect the store to React
-
 //---------------------------------------------
 // ... other imports
 // phase 0 part 2

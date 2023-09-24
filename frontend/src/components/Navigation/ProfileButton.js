@@ -5,6 +5,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
+//bonus phase - moved here from Navigation
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
+
 
 // Create a React functional component called ProfileButton that will
 // render a generic user profile icon of your choice from Font Awesome.
@@ -31,12 +36,6 @@ function ProfileButton({ user }) {
   };
   //--------------------------
 
-  //Remember, the logout button should dispatch the logout action when clicked
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(sessionActions.logout());
-  };
-
   //phase 3
   // closeMenu.
   // When this function is called set the showMenu state variable
@@ -60,6 +59,11 @@ function ProfileButton({ user }) {
   }, [showMenu]); //phase 3
 
 
+  //Remember, the logout button should dispatch the logout action when clicked
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+  };
 
   //toggle showMenu to true indicating that the menu should now be shown
   //if the showMenu state variable is false, then apply a className of "hidden" to the dropdown menu element
@@ -70,18 +74,38 @@ function ProfileButton({ user }) {
   //render it in the ProfileButton component.
   //When the ProfileButton is clicked, toggle showMenu to true indicating that the menu should now be shown.
   //openMenu only opens, but doens't close
+  //bonus phase - added OpenModalButton for LoginFormModal and SignupFormModal
   return (
     <>
       <button onClick={openMenu}>
-        <i class="fa-regular fa-user"></i>
+        <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        {user ? (
+          <>
+            <li>{user.username}</li>
+            <li>{user.firstName} {user.lastName}</li>
+            <li>{user.email}</li>
+            <li>
+              <button onClick={logout}>Log Out</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <OpenModalButton
+                buttonText="Log In"
+                modalComponent={<LoginFormModal />}
+              />
+            </li>
+            <li>
+              <OpenModalButton
+                buttonText="Sign Up"
+                modalComponent={<SignupFormModal />}
+              />
+            </li>
+          </>
+        )}
       </ul>
     </>
   );
