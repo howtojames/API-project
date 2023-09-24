@@ -40,12 +40,5 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "redux-logger": "^3.0.6"
   },
-  "proxy": "http://localhost:8000",
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
-  ],
-  "plugins": [
-    "@babel/plugin-proposal-private-property-in-object"
-  ]
+  "proxy": "http://localhost:8000"
 }
