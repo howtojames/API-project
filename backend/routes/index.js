@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 //----------------------------------
-
+const apiRouter = require('./api');  //every single middleware in the api/ folder
 
 // phase - 1 testing (removed)
 // router.get('/hello/world', function(req, res) {
@@ -26,7 +26,7 @@ router.get("/api/csrf/restore", (req, res) => {
 //---------------------------------
 //phase 2
 // backend/routes/index.js
-const apiRouter = require('./api');  //every single middleware in the api/ folder
+// const apiRouter = require('./api');  //every single middleware in the api/ folder
 
 router.use('/api', apiRouter);  //just to append /api before all the other routes, since app.js already appends the router
 
