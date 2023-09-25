@@ -1,5 +1,5 @@
 {
-  "name": "backend-project",
+  "name": "frontend-project",
   "version": "1.0.0",
   "description": "<!--!!START SILENT --> # AirBnB Clone <!--!!END --> <!--!!ADD --> <!-- # `<name of application here>` --> <!--!!END_ADD --> # Backend Project",
   "main": "index.js",
