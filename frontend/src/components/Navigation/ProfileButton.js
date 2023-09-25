@@ -61,6 +61,7 @@ function ProfileButton({ user }) {
   }, [showMenu]); //phase 3
 
   //phase bonus
+  //!!!
   const closeMenu = () => setShowMenu(false);
 
   //Remember, the logout button should dispatch the logout action when clicked

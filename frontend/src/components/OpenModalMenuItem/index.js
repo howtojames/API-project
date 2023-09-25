@@ -1,4 +1,4 @@
-// frontend/src/components/OpenModalButton/index.js
+// frontend/src/components/OpenModalMenuItem/index.js
 import React from "react";
 import { useModal } from "../../context/Modal";
 
