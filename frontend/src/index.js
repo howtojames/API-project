@@ -63,6 +63,14 @@ function Root() {
 //-------------------------------------------
 
 //render the Root functional component
+// ReactDOM.render(
+//     <React.StrictMode>
+//       <Root />
+//     </React.StrictMode>,
+//     document.getElementById('root'),
+// );
+
+//Dan's fix
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Root/>

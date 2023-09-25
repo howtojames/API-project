@@ -28,13 +28,18 @@ function ProfileButton({ user }) {
   //To get the reference to the HTML element of the dropdown menu, you can use the useRef React hook.
   const ulRef = useRef(); //phase 3
 
+  console.log('user', user);
+  console.log('showMenu', showMenu);
+
   // If showMenu is false, nothing should happen.
   // If showMenu is true, then set the showMenu to true.
   // When the profile button is clicked, it should call openMenu.
   //--------------------------
-  const openMenu = () => {
-    if (showMenu) return;
-    setShowMenu(true);
+  const openMenu = (e) => {
+    e.stopPropagation(); //added
+    // if (showMenu) return;
+    // setShowMenu(true);
+    setShowMenu(!showMenu)
   };
   //--------------------------
 
@@ -85,7 +90,7 @@ function ProfileButton({ user }) {
   //bonus phase - added onButtonClick={closeMenu}
   return (
     <>
-      <button onClick={openMenu}>
+      <button onClick={(e)=> openMenu(e)}>
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
