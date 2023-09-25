@@ -1,5 +1,5 @@
 {
-  "name": "frontend-project",
+  "name": "backend-project",
   "version": "1.0.0",
   "description": "<!--!!START SILENT --> # AirBnB Clone <!--!!END --> <!--!!ADD --> <!-- # `<name of application here>` --> <!--!!END_ADD --> # Backend Project",
   "main": "index.js",
@@ -15,5 +15,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^6.23.0"
+  }
 }
