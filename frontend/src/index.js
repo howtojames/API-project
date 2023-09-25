@@ -4,7 +4,7 @@ import React from 'react';
 
 import './index.css';
 
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client'; //changed
 import { Provider } from 'react-redux';   //provider
 import { BrowserRouter } from 'react-router-dom';   //router
 //phase 4
@@ -22,9 +22,6 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from "./store/session";
 
 //---------------------------------------------
-
-
-
 
 
 //-------------------------------------------
@@ -66,9 +63,8 @@ function Root() {
 //-------------------------------------------
 
 //render the Root functional component
-ReactDOM.render(
-    <React.StrictMode>
-      <Root />
-    </React.StrictMode>,
-    document.getElementById('root'),
-);
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Root/>
+  </React.StrictMode>
+)
