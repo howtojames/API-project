@@ -2,14 +2,15 @@
 
 //phase 1
 //import React from "react"; //restore user
-//removed Route in phase 4
-import { Switch } from "react-router-dom";
+
 //removed in phase 4
 //import LoginFormPage from "./components/LoginFormPage";
 //------------------------------------------
 //phase 1 - restore users
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+//removed Route in phase 4
+import { Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 //------------------------------------------
 //phase 2

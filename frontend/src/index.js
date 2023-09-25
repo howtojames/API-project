@@ -7,6 +7,8 @@ import './index.css';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';   //provider
 import { BrowserRouter } from 'react-router-dom';   //router
+//phase 4
+import { ModalProvider, Modal } from "./context/Modal";
 import App from './App';   //App
 
 import configureStore from './store';   //connect the store to React
@@ -20,8 +22,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from "./store/session";
 
 //---------------------------------------------
-//phase 4
-import { ModalProvider, Modal } from "./context/Modal";
+
 
 
 

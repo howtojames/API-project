@@ -47,6 +47,28 @@ export const login = (user) => async (dispatch) => {
 };
 
 
+
+//-----------------------------------------
+const initialState = { user: null };
+
+//session and action's reducer
+const sessionReducer = (state = initialState, action) => {
+  let newState;
+  switch (action.type) {
+    case SET_USER:
+      newState = Object.assign({}, state);
+      newState.user = action.payload;
+      return newState;
+    case REMOVE_USER:
+      newState = Object.assign({}, state);
+      newState.user = null;
+      return newState;
+    default:
+      return state;
+  }
+};
+
+
 //-----------------------------------------
 // Restore session user thunk action
 // Add a thunk action in frontend/src/store/session.js that will
@@ -104,26 +126,7 @@ export const logout = () => async (dispatch) => {
 //window.store.dispatch(window.sessionActions.logout());
 //works!
 
-//-----------------------------------------
-const initialState = { user: null };
 
-
-//session and action's reducer
-const sessionReducer = (state = initialState, action) => {
-  let newState;
-  switch (action.type) {
-    case SET_USER:
-      newState = Object.assign({}, state);
-      newState.user = action.payload;
-      return newState;
-    case REMOVE_USER:
-      newState = Object.assign({}, state);
-      newState.user = null;
-      return newState;
-    default:
-      return state;
-  }
-};
 
 
 // export the reducer as the default export.
