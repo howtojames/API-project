@@ -65,7 +65,7 @@ function Navigation({ isLoaded }){
   return (
     <ul>
       <li>
-        <NavLink exact to="/">Home</NavLink>
+        <NavLink id="site-title" exact to="/">aA-Bnb</NavLink>
       </li>
       {isLoaded && (
         <li>

@@ -7,3 +7,10 @@
 .hidden {
     display: none;
 }
+
+
+/*added since here*/
+#site-title{
+    text-decoration: none;
+    color: black;
+}
