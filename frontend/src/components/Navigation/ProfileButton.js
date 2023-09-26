@@ -39,6 +39,7 @@ function ProfileButton({ user }) {
     e.stopPropagation(); //added
     // if (showMenu) return;
     // setShowMenu(true);
+    //
     setShowMenu(!showMenu)
   };
   //--------------------------
@@ -88,6 +89,7 @@ function ProfileButton({ user }) {
   //openMenu only opens, but doens't close
   //bonus phase - added OpenModalButton for LoginFormModal and SignupFormModal
   //bonus phase - added onButtonClick={closeMenu}
+  //Dan helped me made changes here
   return (
     <>
       <button onClick={(e)=> openMenu(e)}>
