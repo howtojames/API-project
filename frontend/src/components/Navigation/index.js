@@ -9,6 +9,7 @@ import ProfileButton from './ProfileButton';
 //----------------------------------------------------
 //phase 3
 import './Navigation.css';
+
 //----------------------------------------------------
 //phase 4
 //import OpenModalButton from "../OpenModalButton";
@@ -63,13 +64,13 @@ function Navigation({ isLoaded }){
   //Your navigation should render an unordered list with a navigation link to the home page.
   //It should only contain navigation links to the login and signup routes when there is no session user and a logout button when there is.
   return (
-    <ul>
+    <ul id='navbar-container'>
       <li>
-        <NavLink id="site-title" exact to="/">aA-Bnb</NavLink>
+        <NavLink id="site-title" exact to="/">Home-Bnb</NavLink>
       </li>
       {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
+        <li id="profile-button-container">
+          <ProfileButton id="profile-button" user={sessionUser} />
         </li>
       )}
     </ul>
