@@ -12,6 +12,9 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 
+//added
+import './Navigation.css';
+
 
 // Create a React functional component called ProfileButton that will
 // render a generic user profile icon of your choice from Font Awesome.
@@ -81,7 +84,7 @@ function ProfileButton({ user }) {
   //toggle showMenu to true indicating that the menu should now be shown
   //if the showMenu state variable is false, then apply a className of "hidden" to the dropdown menu element
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
+  console.log('ulClassName', ulClassName)
   //removed <i className="fas fa-user-circle" />
   //Choose an icon that will represent the user profile button and
   //render it in the ProfileButton component.
@@ -92,10 +95,10 @@ function ProfileButton({ user }) {
   //Dan helped me made changes here
   return (
     <>
-      <button onClick={(e)=> openMenu(e)}>
+      <button id="profile-button" onClick={(e)=> openMenu(e)}>
         <i className="fas fa-user-circle" />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <ul id="drop-down-menu-list" className={ulClassName} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
@@ -106,7 +109,7 @@ function ProfileButton({ user }) {
             </li>
           </>
         ) : (
-          <>
+          <div id="two-buttons">
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
@@ -117,7 +120,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
       </ul>
     </>
