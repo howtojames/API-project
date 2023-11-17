@@ -1,9 +1,7 @@
 // frontend/src/store/csrf.js
-// PHASE 0
-//WRAPS REQUESTS WITH CSRP TOKEN
+
 import Cookies from 'js-cookie';
 
-//used in session.js
 export async function csrfFetch(url, options = {}) {
   // set options.method to 'GET' if there is no method
   options.method = options.method || 'GET';
@@ -11,8 +9,8 @@ export async function csrfFetch(url, options = {}) {
   options.headers = options.headers || {};
 
   // if the options.method is not 'GET', then set the "Content-Type" header to
-    // "application/json", and set the "XSRF-TOKEN" header to the value of the
-    // "XSRF-TOKEN" cookie
+  // "application/json", and set the "XSRF-TOKEN" header to the value of the
+  // "XSRF-TOKEN" cookie
   if (options.method.toUpperCase() !== 'GET') {
     options.headers['Content-Type'] =
       options.headers['Content-Type'] || 'application/json';
@@ -22,18 +20,16 @@ export async function csrfFetch(url, options = {}) {
   const res = await window.fetch(url, options);
 
   // if the response status code is 400 or above, then throw an error with the
-    // error being the response
+  // error being the response
   if (res.status >= 400) throw res;
 
   // if the response status code is under 400, then return the response to the
-    // next promise chain
+  // next promise chain
   return res;
 }
 
-//-----------------------------------------
-
-//phase 0 - to call the backend/routes/index.js function
+// ...
 // call this to get the "XSRF-TOKEN" cookie, should only be used in development
 export function restoreCSRF() {
     return csrfFetch('/api/csrf/restore');
-}
+  }
