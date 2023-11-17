@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';  //added Outlet phase 1
 import LoginFormPage from './components/LoginFormPage/LoginFormPage';  //added this for Component because we don't have index.js
 //------------------------------
+import SignupFormPage from './components/SignupFormPage/SignupFormPage';  //added in phase2, added the file because we don't have index.js
+//------------------------------
 import * as sessionActions from './store/session';
 
 //------
@@ -29,6 +31,7 @@ function Layout() {
 //------
 
 //added Layout in phase 1
+//added SignUpFormPage in phase 2
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -40,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginFormPage />
+      },
+      {
+        path: "/signup",
+        element: <SignupFormPage />
       }
     ]
   }
