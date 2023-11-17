@@ -9,6 +9,8 @@ import LoginFormPage from './components/LoginFormPage/LoginFormPage';  //added t
 //------------------------------
 import SignupFormPage from './components/SignupFormPage/SignupFormPage';  //added in phase2, added the file because we don't have index.js
 //------------------------------
+import Navigation from './components/Navigation/Navigation';  //ProfileButton is inside Navigation Component, added in phase 3
+//------------------------------
 import * as sessionActions from './store/session';
 
 //------
@@ -22,8 +24,10 @@ function Layout() {
     });
   }, [dispatch]);
 
+  //changed in phase 3
   return (
     <>
+      <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
   );
@@ -32,6 +36,7 @@ function Layout() {
 
 //added Layout in phase 1
 //added SignUpFormPage in phase 2
+//stayed same in phase 3
 const router = createBrowserRouter([
   {
     element: <Layout />,
