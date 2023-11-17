@@ -1,33 +1,30 @@
-// frontend/src/components/LoginFormPage/LoginFormPage.jsx
-//phase 1
+// frontend/src/components/LoginFormModal/LoginFormModal.jsx
+// changed to modal in phase 4, see instructions
 
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-
-// phase 1
+import { useDispatch } from 'react-redux';
+import { useModal } from '../../context/Modal';
 import './LoginForm.css';
-// ...
 
-function LoginFormPage() {
+function LoginFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
         const data = await res.json();
-        if (data?.errors) setErrors(data.errors);
-      }
-    );
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
   };
 
   return (
@@ -52,11 +49,13 @@ function LoginFormPage() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {errors.credential && (
+          <p>{errors.credential}</p>
+        )}
         <button type="submit">Log In</button>
       </form>
     </>
   );
 }
 
-export default LoginFormPage;
+export default LoginFormModal;
