@@ -76,7 +76,7 @@ router.use('/api', apiRouter);  //just to append /api before all the other route
 //--------------------------------------
 
 //august version
-//changed in Render Deploy (phase 1)
+//changed in Render Deploy's phase 1
 // Static routes
 // Serve React build files in production
 if (process.env.NODE_ENV === 'production') {
