@@ -1,10 +1,14 @@
-// frontend/src/components/SignupFormPage/SignupFormPage.jsx
+// frontend/src/components/SignupFormPage/SignupFormModal.jsx
 // phase 2
+// phase 4 modal change
 
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; //removed, useSelector
+import { useModal } from '../../context/Modal';  //phase 4
+//import { Navigate } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
+//phase 4
+import './SignupForm.css';
 
 // ...
 import './SignupForm.css';
@@ -14,9 +18,9 @@ import './SignupForm.css';
 //You gotta delete the token to test the SignupFormPage
 //Good Job
 //Works
-function SignupFormPage() {
+function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  //const sessionUser = useSelector((state) => state.session.user);  //removed
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -24,6 +28,7 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const { closeModal } = useModal(); //added in phase 4 Modal
 
   if (sessionUser) return <Navigate to="/" replace={true} />;
 
@@ -39,7 +44,9 @@ function SignupFormPage() {
           lastName,
           password
         })
-      ).catch(async (res) => {
+      )
+       .then(closeModal)   //added .then() here in phase 4 modal
+       .catch(async (res) => {
         const data = await res.json();
         if (data?.errors) {
           setErrors(data.errors);
@@ -121,4 +128,4 @@ function SignupFormPage() {
   );
 }
 
-export default SignupFormPage;
+export default SignupFormModal;  //changed in phase 4

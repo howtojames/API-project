@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 ///----------------------------
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';  //added Outlet phase 1
-import LoginFormPage from './components/LoginFormPage/LoginFormPage';  //added this for Component because we don't have index.js
+//removed in phase 4
+//import LoginFormPage from './components/LoginFormPage/LoginFormPage';  //added this for Component because we don't have index.js
 //------------------------------
-import SignupFormPage from './components/SignupFormPage/SignupFormPage';  //added in phase2, added the file because we don't have index.js
+//removed in phase 4
+//import SignupFormPage from './components/SignupFormPage/SignupFormPage';  //added in phase2, added the file because we don't have index.js
 //------------------------------
 import Navigation from './components/Navigation/Navigation';  //ProfileButton is inside Navigation Component, added in phase 3
 //------------------------------
@@ -45,14 +47,14 @@ const router = createBrowserRouter([
         path: '/',
         element: <h1>Welcome!</h1>
       },
-      {
-        path: '/login',
-        element: <LoginFormPage />
-      },
-      {
-        path: "/signup",
-        element: <SignupFormPage />
-      }
+      // {
+      //   path: '/login',
+      //   element: <LoginFormPage />
+      // },
+      // {
+      //   path: "/signup",
+      //   element: <SignupFormPage />
+      // }
     ]
   }
 ]);

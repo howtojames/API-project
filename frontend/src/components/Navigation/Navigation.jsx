@@ -1,9 +1,14 @@
 // frontend/src/components/Navigation/Navigation.jsx
 
 import { NavLink } from 'react-router-dom';
-import { useSelector} from 'react-redux';  //removed useDispatch in phase 3
+import { useSelector } from 'react-redux';  //removed useDispatch in phase 3
 import ProfileButton from './ProfileButton';
 //import * as sessionActions from '../../store/session';  //removed in phase 3
+//added in phase 4
+import OpenModalButton from '../OpenModalButton/OpenModalButton';  //added the file path
+import LoginFormModal from '../LoginFormModal/LoginFormModal';
+import SignupFormModal from '../SignupFormModal/SignupFormModal'; //added in phase 4
+import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
@@ -15,25 +20,32 @@ function Navigation({ isLoaded }) {
   //     dispatch(sessionActions.logout());
   //   };
 
-  const sessionLinks = sessionUser ? (
-    <>
+  //copied from phase 4
+  let sessionLinks;
+  if (sessionUser) {
+    sessionLinks = (
       <li>
         <ProfileButton user={sessionUser} />
       </li>
-      {/* <li>
-        <button onClick={logout}>Log Out</button>
-      </li> */}  {/* removed in phase 3 */}
-    </>
-  ) : (
-    <>
-      <li>
-        <NavLink to="/login">Log In</NavLink>
-      </li>
-      <li>
-        <NavLink to="/signup">Sign Up</NavLink>
-      </li>
-    </>
-  );
+    );
+  } else {
+    sessionLinks = (
+      <>
+        <li>
+          <OpenModalButton
+            buttonText="Log In"
+            modalComponent={<LoginFormModal />}
+          />
+        </li>
+        <li>
+          <OpenModalButton
+            buttonText="Sign Up"
+            modalComponent={<SignupFormModal />}
+          />
+        </li>
+      </>
+    );
+  }
 
   return (
     <ul>
