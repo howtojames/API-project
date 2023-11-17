@@ -19,7 +19,8 @@ if (import.meta.env.MODE !== 'production') {
   window.store = store;
 }
 
-if (process.env.NODE_ENV !== 'production') {
+//changed based on Dan's instructions
+if (import.meta.env.MODE !== 'production') {
   window.store = store;
 }
 
