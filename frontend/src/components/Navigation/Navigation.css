@@ -1,0 +1,4 @@
+/* Add a .hidden CSS rule that will add a CSS style of display: none to the dropdown menu element. */
+.hidden {
+    display: none
+}
