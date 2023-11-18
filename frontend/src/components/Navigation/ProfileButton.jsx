@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
-import OpenModalButton from '../OpenModalButton/OpenModalButton.jsx';  //bonus phase: mind these 3 imports
+import OpenModalMenuItem from './OpenModalMenuItem.jsx';  //bonus phase: mind these 3 imports
 import LoginFormModal from '../LoginFormModal/LoginFormModal.jsx';
 import SignupFormModal from '../SignupFormModal/SignupFormModal.jsx';
 
@@ -21,6 +21,7 @@ function ProfileButton({ user }) {
   useEffect(() => {
     if (!showMenu) return;
 
+    //if showMenu is true, we have a closeMenu
     const closeMenu = (e) => {
       if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
@@ -32,6 +33,7 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
+  //added in bonus optional
   const closeMenu = () => setShowMenu(false);
 
   const logout = (e) => {
@@ -60,16 +62,16 @@ function ProfileButton({ user }) {
         ) : (
           <>
             <li>
-              <OpenModalButton
-                buttonText="Log In"
-                onButtonClick={closeMenu}
+              <OpenModalMenuItem          /* changeed in bonus optional */
+                itemText="Log In"       /* changed in bonus optional */
+                onItemClick={closeMenu}   /* changed to onItemClick in bonus phase */
                 modalComponent={<LoginFormModal />}
               />
             </li>
             <li>
-              <OpenModalButton
-                buttonText="Sign Up"
-                onButtonClick={closeMenu}
+              <OpenModalMenuItem
+                itemText="Sign Up"
+                onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
             </li>
