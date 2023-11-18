@@ -30,7 +30,8 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal(); //added in phase 4 Modal
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  //removed in phase 4
+  //if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
