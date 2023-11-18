@@ -3,7 +3,7 @@
 
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ProfileButton from './ProfileButton';
+import ProfileButton from './ProfileButton.jsx';  //bonus phase copymind your imports
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
