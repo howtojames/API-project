@@ -6,12 +6,13 @@ import '../../App.css';
 //props
 function SpotTile({ spot }){
 
+    console.log('spot', spot);
      return (
         <div className='spot-tile hover-pointer' title={`${spot.name}`}>
             {/* <span className='tool-tip'>{spot.name}</span> */}
             {/* Links to /spots/:spotId */}
             <Link key={spot.id} to={`/spots/${spot.id}`} className='spot-link'>
-                {/* <img src={spot.previewImage} height="200px" className='image'/> */}
+                <img src={spot.previewImage} height="200px" className='image'/>
                 <div className='tile-bottom'>
                     <div className='tile-bottom-left'>
                         <div>{spot.city}, {spot.state}</div>
