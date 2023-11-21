@@ -8,6 +8,9 @@ import OpenModalMenuItem from './OpenModalMenuItem.jsx';  //bonus phase: mind th
 import LoginFormModal from '../LoginFormModal/LoginFormModal.jsx';
 import SignupFormModal from '../SignupFormModal/SignupFormModal.jsx';
 
+//monday copied
+import './Navigation.css';
+
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -46,6 +49,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
+      <p>ProfileButton</p>
       <button onClick={toggleMenu}>
         <i className="fas fa-user-circle" />
       </button>
@@ -60,21 +64,17 @@ function ProfileButton({ user }) {
             </li>
           </>
         ) : (
-          <>
-            <li>
-              <OpenModalMenuItem          /* changeed in bonus optional */
-                itemText="Log In"       /* changed in bonus optional */
-                onItemClick={closeMenu}   /* changed to onItemClick in bonus phase */
-                modalComponent={<LoginFormModal />}
-              />
-            </li>
-            <li>
-              <OpenModalMenuItem
-                itemText="Sign Up"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
-            </li>
+          <>                              {/* removed nested li elements */}
+            <OpenModalMenuItem          /* changeed in bonus optional */
+              itemText="Log In"       /* changed in bonus optional */
+              onItemClick={closeMenu}   /* changed to onItemClick in bonus phase */
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+              modalComponent={<SignupFormModal />}
+            />
           </>
         )}
       </ul>

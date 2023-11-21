@@ -9,14 +9,15 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
+  //Navigation css: added basic stylying to page
   return (
-    <ul>
+    <ul id='navbar-container'>
       <li>
-        <NavLink exact to="/">Home</NavLink>
+        <NavLink id="site-title" to="/">Home-Bnb</NavLink>
       </li>
       {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
+        <li id="profile-button-container">
+          <ProfileButton id="profile-button" user={sessionUser} />
         </li>
       )}
     </ul>

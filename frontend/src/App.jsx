@@ -15,6 +15,11 @@ import Navigation from './components/Navigation/Navigation';  //ProfileButton is
 //------------------------------
 import * as sessionActions from './store/session';
 
+//
+import './App.css';
+import SpotsView from './components/SpotsView/SpotsView';  //auto imported
+import SpotDetails from './components/SpotDetails/SpotDetails';
+
 //------
 function Layout() {
   const dispatch = useDispatch();
@@ -29,7 +34,7 @@ function Layout() {
   //changed in phase 3
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Navigation isLoaded={isLoaded}/>
       {isLoaded && <Outlet />}
     </>
   );
@@ -45,7 +50,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <SpotsView />
       },
       // {
       //   path: '/login',
@@ -55,6 +60,10 @@ const router = createBrowserRouter([
       //   path: "/signup",
       //   element: <SignupFormPage />
       // }
+      {
+        path: '/spots/:spotId',
+        element: <SpotDetails />
+      }
     ]
   }
 ]);
