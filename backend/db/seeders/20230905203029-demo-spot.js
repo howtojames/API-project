@@ -81,10 +81,10 @@ module.exports = {
         country: "United States",
         lat: 37.4230,
         lng: -122.1027,
-        name: "This bright & sunny guesthouse is located in a quiet neighborhood in the heart of Palo Alto; close to Stanford, Alphabet, Meta, Apple. ",
-        description: "Guesthouse @ Serene Neighborhood",
+        name: "Guesthouse @ Serene Neighborhood",
+        description: "This bright & sunny guesthouse is located in a quiet neighborhood in the heart of Palo Alto; close to Stanford, Alphabet, Meta, Apple.",
         price: 168,
-      }  //5 spots in total
+      }  //5 spots in total, 3 san diego, 2 mountain view
     ], { validate: true });
   },
 

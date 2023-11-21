@@ -1,0 +1,57 @@
+.spot-tile {
+    /* blocks that can be on the same line */
+    display: inline-block;
+    /* border: 1px dashed black; */
+    margin: 10px;
+
+    position: relative;
+
+    text-decoration: none;
+}
+.spot-link {
+    width: 100%;
+    height: 100%;
+
+    text-decoration: none;
+    color: black;
+}
+
+.city {
+    text-decoration: none;
+}
+
+.tile-bottom {
+    position: relative;
+}
+.tile-bottom-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* .tool-tip {
+    display: none;
+    white-space: nowrap;
+    background-color: #5c5c5c;
+    color: white;
+    position: absolute;
+    border-radius: 2px;
+} */
+/* selects:  */
+/* when the tile is being hovered, and then selects the .tool-tip class */
+/* .spot-tile:hover .tool-tip {
+    display: block;
+} */
+
+/* .tool-tip::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 50%;
+
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #5c5c5c;
+    width: 0;
+    height: 0;
+} */
