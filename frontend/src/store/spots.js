@@ -1,5 +1,6 @@
 const LOAD_ALL_SPOTS = "spots/loadAllSpots";
-
+//get a single spot
+//const GET_SPOT_DETAILS = "spots/getSpotDetails"
 
 //action creator
 //no parameter
@@ -9,6 +10,17 @@ const loadAllSpots = (allSpots) => {
     allSpots: allSpots
   };
 };
+
+
+//use this to receive the spot, to pass into the reducer
+// const getSpotDetails = (spot) => {
+//   return {
+//     type: GET_SPOT_DETAILS,
+//     spot: spot
+//   };
+// };
+
+
 
 
 
@@ -26,8 +38,21 @@ export const thunkGetAllSpots = () => async (dispatch) => {
   } else  {
     console.log('/api/spots error output');
   }
-
 };
+
+// export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
+
+//   const res = await fetch(`/api/spots/${spotId}`);
+
+//   if(res.ok) {
+//     const spotDetails = await res.json();
+//     console.log('spotDetails', spotDetails);
+//     dispatch(getSpotDetails(spotDetails));
+//     return spotDetails;
+//   } else  {
+//     console.log('/api/spots/:spotId error here');
+//   }
+// }
 
 
 
@@ -42,6 +67,10 @@ const spotsReducer = (state = initialState, action) => {
       //console.log('newState', newState);
       return newState;
     }
+    // case GET_SINGLE_SPOT: {
+    //   let newState = {...initialState, singleSpot: {}};
+    //   return null;
+    // }
     default:
       return state;
   }
