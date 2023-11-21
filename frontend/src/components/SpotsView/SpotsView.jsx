@@ -13,8 +13,8 @@ function SpotsView() {
         dispatch(thunkGetAllSpots());
     }, [dispatch])
 
-
-    const allSpotsObj = useSelector(state => state.spots.allSpots);
+    //updated store shape
+    const allSpotsObj = useSelector(state => state.spots);
     const allSpotsArr = Object.values(allSpotsObj);
 
     //console.log('allSpotsObj', allSpotsObj);

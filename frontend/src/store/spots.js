@@ -1,6 +1,6 @@
 const LOAD_ALL_SPOTS = "spots/loadAllSpots";
 //get a single spot
-//const GET_SPOT_DETAILS = "spots/getSpotDetails"
+const GET_SPOT_DETAILS = "spots/getSpotDetails"
 
 //action creator
 //no parameter
@@ -13,12 +13,12 @@ const loadAllSpots = (allSpots) => {
 
 
 //use this to receive the spot, to pass into the reducer
-// const getSpotDetails = (spot) => {
-//   return {
-//     type: GET_SPOT_DETAILS,
-//     spot: spot
-//   };
-// };
+const getSpotDetails = (spotDetails) => {
+  return {
+    type: GET_SPOT_DETAILS,
+    spotDetails: spotDetails
+  };
+};
 
 
 
@@ -40,37 +40,40 @@ export const thunkGetAllSpots = () => async (dispatch) => {
   }
 };
 
-// export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
+export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 
-//   const res = await fetch(`/api/spots/${spotId}`);
+  const res = await fetch(`/api/spots/${spotId}`);
 
-//   if(res.ok) {
-//     const spotDetails = await res.json();
-//     console.log('spotDetails', spotDetails);
-//     dispatch(getSpotDetails(spotDetails));
-//     return spotDetails;
-//   } else  {
-//     console.log('/api/spots/:spotId error here');
-//   }
-// }
+  if(res.ok) {
+    const spotDetails = await res.json();
+    console.log('inside thunkGetSpotDetails');
+    console.log('spotDetails in thunk', spotDetails);
+    dispatch(getSpotDetails(spotDetails));
+    return spotDetails;
+  } else  {
+    console.log('/api/spots/:spotId error here');
+  }
+}
 
 
 
-const initialState = { allSpots: {} };
+//const initialState = { allSpots: {}, singleSpot: {} };
+const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_ALL_SPOTS: {
-      let newState = { ...initialState, allSpots: {}};  //new ref
+    case LOAD_ALL_SPOTS: {  //limited Spots info
+      const newState = { ...initialState };
       //console.log('action.allSpots', action.allSpots)
-      action.allSpots.Spots.forEach((spot) => newState.allSpots[spot.id] = spot);
+      action.allSpots.Spots.forEach((spot) => newState[spot.id] = spot);
       //console.log('newState', newState);
       return newState;
     }
-    // case GET_SINGLE_SPOT: {
-    //   let newState = {...initialState, singleSpot: {}};
-    //   return null;
-    // }
+    case GET_SPOT_DETAILS: {
+      const newState = { ...state, [action.spotDetails.id]: action.spotDetails };
+      //console.log('GET_SPOT_DETAILS newState', newState);
+      return newState;
+    }
     default:
       return state;
   }
