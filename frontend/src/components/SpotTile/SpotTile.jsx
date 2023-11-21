@@ -6,7 +6,7 @@ import '../../App.css';
 //props
 function SpotTile({ spot }){
 
-    console.log('spot', spot);
+    //console.log('spot', spot);
      return (
         <div className='spot-tile hover-pointer' title={`${spot.name}`}>
             {/* <span className='tool-tip'>{spot.name}</span> */}
