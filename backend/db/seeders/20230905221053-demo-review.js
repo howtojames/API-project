@@ -29,10 +29,11 @@ module.exports = {
       },
       {
         spotId:1,
-        userId:2,             //userId 1 has two spots
+        userId:2,
         review: "Example review for spotId 1.",
         stars: 4,
       },
+
       {
         spotId:2,
         userId:1,
@@ -44,7 +45,17 @@ module.exports = {
         userId: 2,
         review: "Enjoyed my stay here. Nice spot with good amenities.",
         stars: 4
-      }              //userId 3 does not have a review
+      },
+
+      {
+        spotId:3,
+        userId:1,
+        review: "First review for Spot 3.",
+        stars: 4
+      },
+
+
+      //userId 3 does not have a review
     ], { validate: true });
   },
 

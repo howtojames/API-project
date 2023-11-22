@@ -1,0 +1,73 @@
+.page-container {
+    max-width: 1200px;
+    /* top-bottom, left-right, to center */
+    margin: 0 auto;
+}
+
+
+/* images */
+.image-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 5px;
+}
+
+.left-image-container {
+    margin-right: 5px;
+}
+
+.right-image-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.right-side-img-div {
+    margin-right: 5px;
+}
+
+/* description container */
+.middle-container {
+    display: flex;
+}
+
+.middle-left-container {
+    flex: 70%;
+}
+
+/* reserve box */
+.reserve-box {
+    flex: 30%;
+    border: 2px solid black;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column; /* order them in coolumn direction */
+    justify-content: center; /* main axis */
+    /* don't have to use aligh items here */
+}
+
+.reserve-box-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* separate night and stars * reviews */
+}
+
+
+.reserve-box-bottom {
+    padding: 5px;
+    width: 80%;
+    background-color: #ff5c5c;
+    color: white;
+
+    margin: 0 auto;
+}
+
+
+.review-container {
+    margin-top: 50px;
+    border-top: 2px solid black;
+}
+.review-container-top {
+    margin-top: 10px;
+    font-size: 20px;
+}
