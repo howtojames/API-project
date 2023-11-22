@@ -116,7 +116,9 @@ function SpotDetails() {
                 </div>
 
                 {/* To do later: Populate Reviews */}
-                <div></div>
+                <div className="review">
+
+                </div>
 
 
 

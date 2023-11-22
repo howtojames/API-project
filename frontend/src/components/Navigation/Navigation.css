@@ -12,7 +12,7 @@
 /* copied form before */
 /* focus on funcitonality for now, make changes later */
 
-/* index.js */
+/* index.jsx */
 #navbar-container{
     display: flex;
 
@@ -21,25 +21,22 @@
     border-bottom: 1px solid #ccc;
 }
 
-
 .navbar-left {
     margin-right: auto;
 }
 .navbar-right {
-    display: flex;
-    justify-content: space-around;
+    display: flex;  /* flex on the right */
+    justify-content: space-evenly;
 
-    width: 350px;
+    width: 300px;
 }
 
 .create-a-new-spot-link {
     color: black;
     text-decoration: none;
+    /* border: 1px solid black; */
+    padding: 10px 15px; /* bigger click box */
 }
-
-
-
-
 /*added since here*/
 #site-title{
     float: left;
@@ -51,20 +48,29 @@
     font-size: 30px;
     font-weight: 700;
 }
-#profile-button-container{
+/* in Navigation.jsx */
+.profile-button-container{
     position: absolute;
-    right: 10px;
+    right: 10px;  /* direction are used relative to the position */
+    margin-top: 8px;  /* distace from top of site */
+}
+.profile-button:hover {
+    cursor: pointer;
+}
+/* ProfileButton.jsx */
+.profile-button {
+    background-color: white;
+    padding: 2px 10px;
+    border-radius: 30px;
+
+
 }
 
-
-/* ProfileButton.js */
-.profile-dropdown {
-
-}
 
 #drop-down-menu-list {
     position: absolute;
     right: 0; /* align it to the right */
+
 
     background-color: white;
     border: 1px solid #ccc;
@@ -85,6 +91,14 @@
 }
 
 /* when logged out */
+#two-buttons {
+    display: flex;
+    flex-direction: column;
+}
+#two-buttons:hover{
+    cursor: pointer;
+}
+
 #two-buttons * {
     position: relative;
     display: block;

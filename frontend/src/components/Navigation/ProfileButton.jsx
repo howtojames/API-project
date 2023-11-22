@@ -9,6 +9,8 @@ import LoginFormModal from '../LoginFormModal/LoginFormModal.jsx';
 import SignupFormModal from '../SignupFormModal/SignupFormModal.jsx';
 
 //monday copied
+//Navigation.css includes styling for ProfileButton.jsx too
+//try to use classes and ids for elements
 import './Navigation.css';
 
 function ProfileButton({ user }) {
@@ -49,10 +51,11 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+      <button className="profile-button" onClick={toggleMenu}>
+        <i className="fa-solid fa-bars"></i> {/* from own kit */}
+        <i className="fas fa-user-circle" /> {/* from old fontawesome link */}
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <ul id="drop-down-menu-list" className={ulClassName} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
@@ -63,7 +66,7 @@ function ProfileButton({ user }) {
             </li>
           </>
         ) : (
-          <>                              {/* removed nested li elements */}
+          <div id="two-buttons">                              {/* removed nested li elements */}
             <OpenModalMenuItem          /* changeed in bonus optional */
               itemText="Log In"       /* changed in bonus optional */
               onItemClick={closeMenu}   /* changed to onItemClick in bonus phase */
@@ -74,7 +77,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
       </ul>
     </>
