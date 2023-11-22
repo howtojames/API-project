@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton.jsx';  //bonus phase copymind your imports
 import './Navigation.css';
 
+
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
@@ -20,8 +21,8 @@ function Navigation({ isLoaded }) {
           <div className='create-a-new-spot'>
             <Link to="/spots/new" className='create-a-new-spot-link'>Create a New Spot</Link>
           </div>
-          <div id="profile-button-container">
-            <ProfileButton id="profile-button" user={sessionUser} />
+          <div className="profile-button-container">
+            <ProfileButton user={sessionUser} className="profile-button-hover"/>
           </div>
         </div>
       )}

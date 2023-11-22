@@ -1,16 +1,17 @@
 //from ArtImageTile
 import { Link } from 'react-router-dom';
 import './SpotTile.css';
-import '../../App.css';
+
 
 //props
 function SpotTile({ spot }){
 
     //console.log('spot', spot);
      return (
-        <div className='spot-tile hover-pointer' title={`${spot.name}`}>
+        <div className='spot-tile' title={`${spot.name}`}>
             {/* <span className='tool-tip'>{spot.name}</span> */}
             {/* Links to /spots/:spotId */}
+            {/* hovers because we are inside a Link */}
             <Link key={spot.id} to={`/spots/${spot.id}`} className='spot-link'>
                 <img src={spot.previewImage} height="200px" className='image'/>
                 <div className='tile-bottom'>
