@@ -599,8 +599,8 @@ router.get('/:spotId', async (req, res) => {
     });
     if(avgRating[0].dataValues.avgRating === null){
         spot.dataValues.avgRating = 0;
-    } else {
-        spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
+    } else {//changed during frontend, outputting reviews to decimals
+        spot.dataValues.avgRating = parseFloat(avgRating[0].dataValues.avgRating).toFixed(2);
     };
 
 
@@ -725,8 +725,8 @@ router.get('/', validatePagination, async (req, res) => {
 
         if(avgRating[0].dataValues.avgRating === null){
             spot.dataValues.avgRating = 0;
-        } else {
-            spot.dataValues.avgRating = parseInt(avgRating[0].dataValues.avgRating)
+        } else { //changed during frontend, show on landing page reviews with two decimals, still got it james!!
+            spot.dataValues.avgRating = parseFloat(avgRating[0].dataValues.avgRating).toFixed(2);
         };
 
 

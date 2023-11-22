@@ -28,6 +28,12 @@ module.exports = {
         stars: 5,
       },
       {
+        spotId:1,
+        userId:2,             //userId 1 has two spots
+        review: "Example review for spotId 1.",
+        stars: 4,
+      },
+      {
         spotId:2,
         userId:1,
         review: "Had a wonderful time at this spot. Clean and comfortable. Only complaint was that there was no air conditioning.",
