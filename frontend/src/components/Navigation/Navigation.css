@@ -14,23 +14,38 @@
 
 /* index.js */
 #navbar-container{
-    position: relative;
+    display: flex;
 
+    justify-content: space-around;
     height: 80px;
     border-bottom: 1px solid #ccc;
 }
 
-#navbar-container li{
-    /* put side by side */
-    display: inline;
 
+.navbar-left {
+    margin-right: auto;
 }
+.navbar-right {
+    display: flex;
+    justify-content: space-around;
+
+    width: 350px;
+}
+
+.create-a-new-spot-link {
+    color: black;
+    text-decoration: none;
+}
+
+
+
+
 /*added since here*/
 #site-title{
     float: left;
 
     text-decoration: none;
-    color: #FF5A5F;
+    color: #ff5c5c;
 
     font-family: roboto;
     font-size: 30px;
@@ -76,4 +91,17 @@
     width: 100%;
     text-align: center;
     font-family: roboto;
+}
+
+
+
+.create-a-new-spot {
+    display: block;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    /* border: 1px solid black; */
+
+    padding: 10px 20px;
+    /* border-radius: 10px; */
 }

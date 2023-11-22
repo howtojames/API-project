@@ -1,7 +1,7 @@
 // frontend/src/components/Navigation/Navigation.jsx
 // everything refactored in bonus phase
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton.jsx';  //bonus phase copymind your imports
 import './Navigation.css';
@@ -11,16 +11,21 @@ function Navigation({ isLoaded }) {
 
   //Navigation css: added basic stylying to page
   return (
-    <ul id='navbar-container'>
-      <li>
+    <div id='navbar-container'>
+      <div className="navbar-left">
         <NavLink id="site-title" to="/">Home-Bnb</NavLink>
-      </li>
+      </div>
       {isLoaded && (
-        <li id="profile-button-container">
-          <ProfileButton id="profile-button" user={sessionUser} />
-        </li>
+        <div className="navbar-right">
+          <div className='create-a-new-spot'>
+            <Link to="/spots/new" className='create-a-new-spot-link'>Create a New Spot</Link>
+          </div>
+          <div id="profile-button-container">
+            <ProfileButton id="profile-button" user={sessionUser} />
+          </div>
+        </div>
       )}
-    </ul>
+    </div>
   );
 }
 
