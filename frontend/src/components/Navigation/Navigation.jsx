@@ -8,8 +8,19 @@ import './Navigation.css';
 
 
 function Navigation({ isLoaded }) {
+  //grabs the sessionUser after first render
   const sessionUser = useSelector(state => state.session.user);
 
+  //this runs on first render
+  let loggedIn = false;  //not logged in by default
+  if(sessionUser && Object.values(sessionUser).length > 0){
+    loggedIn = true;
+  } else {
+    loggedIn = false;
+  } //after this loggedIn is determined and put to use in the render
+
+  // console.log('sessionUser', sessionUser);
+  // console.log('loggedIn', loggedIn);
   //Navigation css: added basic stylying to page
   return (
     <div id='navbar-container'>
@@ -18,9 +29,11 @@ function Navigation({ isLoaded }) {
       </div>
       {isLoaded && (
         <div className="navbar-right">
-          <div className='create-a-new-spot'>
-            <Link to="/spots/new" className='create-a-new-spot-link'>Create a New Spot</Link>
-          </div>
+          {loggedIn && (
+            <div className='create-a-new-spot'>
+              <Link to="/spots/new" className='create-a-new-spot-link'>Create a New Spot</Link>
+            </div>
+          )}
           <div className="profile-button-container">
             <ProfileButton user={sessionUser} className="profile-button-hover"/>
           </div>
