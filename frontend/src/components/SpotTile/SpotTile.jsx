@@ -2,11 +2,42 @@
 import { Link } from 'react-router-dom';
 import './SpotTile.css';
 
+//for modal
+import { useState, useEffect, useRef } from 'react';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem.jsx';  //bonus phase: mind these 3 imports
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal.jsx';
 
+//import
 //props
 function SpotTile({ spot, type }){
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
 
-    //console.log('spot', spot);
+
+    //  const onClick = (e) => {
+    //     e.preventDefault();
+    //  }
+
+    //logic from ProfileButton
+    useEffect(() => {
+    if (!showMenu) return;
+
+    //if showMenu is true, we have a closeMenu
+    const closeMenu = (e) => {
+        if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+        }
+    };
+
+    document.addEventListener('click', closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
+
+
+
+    //added in bonus optional
+    const closeMenu = () => setShowMenu(false);
      return (
         <div className='spot-tile' title={`${spot.name}`}>
             {/* <span className='tool-tip'>{spot.name}</span> */}
@@ -24,8 +55,16 @@ function SpotTile({ spot, type }){
             </Link>
             {type === 'manage-spots' ? (
                 <div className='update-delete-container'>
-                    <Link className='update'>Update</Link>
-                    <Link className='delete'>Delete</Link>
+                    <Link to={`/spots/${spot.id}/edit`} className='update'>Update</Link>
+                    {/* <Link onClick={onClick} className='delete'>Delete</Link> */}
+                    <div className="delete-button">  {/* pass in props for spot.id */}
+                        <OpenModalMenuItem
+                        className="delete-modal"
+                        itemText="Delete"
+                        onItemClick={closeMenu}
+                        modalComponent={<DeleteSpotModal spotId={spot.id}/>}
+                        />
+                    </div>
                 </div>
             ) : null}
 

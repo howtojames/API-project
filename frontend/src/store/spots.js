@@ -6,6 +6,8 @@ const GET_SPOT_DETAILS = "spots/getSpotDetails"
 const POST_A_SPOT = 'spots/postASpot';
 const POST_A_SPOT_IMAGE = 'spots/postASpotImage';
 const GET_CURRENT_USER_SPOTS = 'spots/getCurrentUserSpots';
+const UPDATE_A_SPOT = 'spots/updateASpot';
+const DELETE_A_SPOT = 'spots/deleteASpot';
 
 //action creator
 //no parameter
@@ -37,12 +39,26 @@ const postASpotImage = (spotId, spotImageData) => {
     spotImageData: spotImageData
   }
 }
-
 //get curent user spots
 const getCurrentUserSpots = (currentUserSpots) => {
   return {
     type: GET_CURRENT_USER_SPOTS,
     currentUserSpots: currentUserSpots
+  }
+}
+//the spotData will be the retured data from PUT
+//the data returned/generated will include the id
+const updateASpot = (spotData) => {
+  return {
+    type: UPDATE_A_SPOT,
+    spotData: spotData
+  };
+};
+
+const deleteASpot = (spotId) => {
+  return {
+    type: DELETE_A_SPOT,
+    spotId: spotId
   }
 }
 
@@ -65,9 +81,8 @@ export const thunkGetAllSpots = () => async (dispatch) => {
     console.log('/api/spots error output');
   }
 };
-
+//we use this for details page, and update page
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
-
   const res = await csrfFetch(`/api/spots/${spotId}`);  //fetch
 
   if(res.ok) {
@@ -143,6 +158,51 @@ export const thunkGetCurrentUserSpots = () => async (dispatch) => {
   }
 }
 
+//UPDATE A SPOT
+//will take in spotId for the api route, and the spot (spot data)
+export const thunkUpdateASpot = (spotId, spot) => async (dispatch) => {
+  //Method: PUT
+  //URL: /api/spots/:spotId
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(spot)
+  });
+
+  if(res.ok) {
+    const spotData = await res.json();
+    //console.log('spotData', spotData);
+    dispatch(updateASpot(spotData));
+    return spotData;
+  } else {
+    const error = await res.json();
+    console.log('error', error);
+    return error;
+  }
+}
+
+
+//delete a spot
+export const thunkDeleteASpot = (spotId) => async (dispatch) => {
+  //  Method: DELETE
+  // URL: /api/spots/:spotId
+  // Body: none
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'DELETE',
+  });
+
+  if(res.ok) {
+    const spotData = await res.json();
+    //console.log('spotData', spotData);
+    dispatch(deleteASpot(spotId));
+    return spotData;
+  } else {
+    const error = await res.json();
+    console.log('error', error);
+    return error;
+  }
+}
+
 
 const initialState = {};
 
@@ -184,6 +244,9 @@ const spotsReducer = (state = initialState, action) => {
         //Spots is [{}, {}, ...]
         action.currentUserSpots.Spots.forEach((spot) => newState[spot.id] = spot);
         return newState;
+    }
+    case UPDATE_A_SPOT: {  //same as create a spot
+        return { ...state, [action.spotData.id]: action.spotData };
     }
     default:
       return state;

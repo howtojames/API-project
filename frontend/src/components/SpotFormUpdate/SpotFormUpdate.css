@@ -1,0 +1,81 @@
+.spot-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.full-length-text-input {
+    width: 100%;
+}
+textarea {
+    height: 100px;
+}
+
+
+.section-one input {
+    margin-bottom: 10px;
+}
+.section-five input {
+
+}
+
+
+.city {
+    display: inline-block;
+    width: 70%;
+}
+.city input{
+    width: 90%;
+}
+.state {
+    display: inline-block;
+    width: 30%;
+}
+
+.price-input-container {
+    display: flex;
+}
+.price-input {
+    order: 1;
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    background-color: #e8f4fc;
+}
+
+input {
+    background-color: #e8f4fc;
+    border: 2px black solid;
+    border-radius: 2px;
+}
+
+.section-header {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.error-message {
+    color: #ff5c5c;
+}
+
+
+/*section border */
+.section-two,
+.section-three,
+.section-four,
+.section-five,
+.section-six {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid black;
+}
+
+.section-six {
+    display: flex;
+    justify-content: center;
+}
+.section-six button {
+    background-color: #ff5c5c;;
+    color: white;
+}
