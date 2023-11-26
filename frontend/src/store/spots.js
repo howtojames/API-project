@@ -5,6 +5,7 @@ const LOAD_ALL_SPOTS = "spots/loadAllSpots";
 const GET_SPOT_DETAILS = "spots/getSpotDetails"
 const POST_A_SPOT = 'spots/postASpot';
 const POST_A_SPOT_IMAGE = 'spots/postASpotImage';
+const GET_CURRENT_USER_SPOTS = 'spots/getCurrentUserSpots';
 
 //action creator
 //no parameter
@@ -14,8 +15,6 @@ const loadAllSpots = (allSpots) => {
     allSpots: allSpots
   };
 };
-
-
 //use this to receive the spot, to pass into the reducer
 const getSpotDetails = (spot) => {
   return {
@@ -23,8 +22,6 @@ const getSpotDetails = (spot) => {
     spot: spot
   };
 };
-
-
 //this spotData is passed into the reducer
 const postASpot = (spotData) => {
   return {
@@ -32,14 +29,20 @@ const postASpot = (spotData) => {
     spotData: spotData
   };
 };
-
-
 //this spotImage is the data being returned by the POST response
 const postASpotImage = (spotId, spotImageData) => {
   return {
     type: POST_A_SPOT_IMAGE,
     spotId: spotId,
     spotImageData: spotImageData
+  }
+}
+
+//get curent user spots
+const getCurrentUserSpots = (currentUserSpots) => {
+  return {
+    type: GET_CURRENT_USER_SPOTS,
+    currentUserSpots: currentUserSpots
   }
 }
 
@@ -100,10 +103,8 @@ export const thunkPostASpot = (spot) => async (dispatch) => {
   }
 }
 
-
-//
 export const thunkPostASpotImage = (spotId, spotImage) => async (dispatch) => {
-  //we get back the {} with details of the newly created Spot
+  //we get back the {} with details of the newly created Spot Images
   const res = await csrfFetch(`/api/spots/${spotId}/images`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -119,6 +120,23 @@ export const thunkPostASpotImage = (spotId, spotImage) => async (dispatch) => {
     return spotImageData;
   } else  {
     console.log('inside thunkPostASpotImage error message');
+    const error = await res.json();
+    console.log('error', error);
+    return error;
+  }
+}
+
+//thunk get current user's spots
+export const thunkGetCurrentUserSpots = () => async (dispatch) => {
+  //we get back {} with Spots: [{}, {}..]
+  const res = await csrfFetch(`/api/spots/current`);
+
+  if(res.ok) {
+    const spotData = await res.json();
+    console.log('spotData', spotData);
+    dispatch(getCurrentUserSpots(spotData));
+    return spotData;
+  } else  {
     const error = await res.json();
     console.log('error', error);
     return error;
@@ -159,6 +177,13 @@ const spotsReducer = (state = initialState, action) => {
           [action.spotId]: {...state[action.spotId], SpotImages: [...SpotImages, action.spotImageData]}};  //this is the same as push
         return newState;
       }
+    }
+    case GET_CURRENT_USER_SPOTS: {
+        //we don't populate using previous state, we only want to populate it with user's spots
+        const newState = {};
+        //Spots is [{}, {}, ...]
+        action.currentUserSpots.Spots.forEach((spot) => newState[spot.id] = spot);
+        return newState;
     }
     default:
       return state;

@@ -23,7 +23,7 @@ function SpotsView() {
             <h2>SpotsView Component</h2>
             {/* artwork.id here is unique, but gallery.id is the same */}
             {allSpotsArr.map((spot) => (
-                <SpotTile key={spot.id} spot={spot} />
+                <SpotTile key={spot.id} spot={spot} type='view-spots'/>
             ))}
         </>
     )

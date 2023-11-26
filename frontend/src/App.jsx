@@ -21,6 +21,7 @@ import SpotsView from './components/SpotsView/SpotsView';  //auto imported
 import SpotDetails from './components/SpotDetails/SpotDetails';
 import SpotForm from './components/SpotForm/SpotForm.jsx';
 
+import SpotsViewManage from './components/SpotsViewManage/SpotsViewManage';
 
 //------
 function Layout() {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/new',
         element: <SpotForm />
+      },
+      {
+        path: '/spots/current',
+        element: <SpotsViewManage />
       }
     ]
   }
