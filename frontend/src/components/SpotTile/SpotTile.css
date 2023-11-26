@@ -29,29 +29,25 @@
     top: 0;
 }
 
-/* .tool-tip {
-    display: none;
-    white-space: nowrap;
-    background-color: #5c5c5c;
+/* update, delete buttons */
+.update-delete-container {
+    margin-top: 20px;
+}
+.update {
+    text-decoration: none;
+    background-color: gray;
     color: white;
-    position: absolute;
-    border-radius: 2px;
-} */
-/* selects:  */
-/* when the tile is being hovered, and then selects the .tool-tip class */
-/* .spot-tile:hover .tool-tip {
-    display: block;
-} */
+    border: 2px solid black;
 
-/* .tool-tip::before {
-    content: "";
-    position: absolute;
-    top: 18px;
-    left: 50%;
+    padding: 0px 5px;
+    margin-right: 15px;
+}
+.delete {
+    text-decoration: none;
+    background-color: gray;
+    color: white;
+    border: 2px solid black;
 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #5c5c5c;
-    width: 0;
-    height: 0;
-} */
+    padding: 0px 5px;
+    margin-right: 15px;
+}

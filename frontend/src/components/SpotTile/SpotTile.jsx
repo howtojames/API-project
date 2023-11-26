@@ -4,7 +4,7 @@ import './SpotTile.css';
 
 
 //props
-function SpotTile({ spot }){
+function SpotTile({ spot, type }){
 
     //console.log('spot', spot);
      return (
@@ -22,6 +22,13 @@ function SpotTile({ spot }){
                     <div className='tile-bottom-right'>&#9733;{spot.avgRating ? spot.avgRating : 'New'}</div>
                 </div>
             </Link>
+            {type === 'manage-spots' ? (
+                <div className='update-delete-container'>
+                    <Link className='update'>Update</Link>
+                    <Link className='delete'>Delete</Link>
+                </div>
+            ) : null}
+
         </div>
      )
 }

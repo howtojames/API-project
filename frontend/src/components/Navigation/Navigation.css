@@ -61,9 +61,10 @@
 .profile-button {
     background-color: white;
     padding: 2px 10px;
-    border-radius: 30px;
+    border-radius: 100px;
 
-
+    height: 30px;
+    width: 60px;
 }
 
 
@@ -71,12 +72,13 @@
     position: absolute;
     right: 0; /* align it to the right */
 
+    width: 150px;
 
     background-color: white;
-    border: 1px solid #ccc;
+    border: 2px solid black;
     padding: 0px;
 
-    border-radius: 5%;
+
 }
 
 /* when logged in */
@@ -84,7 +86,7 @@
     position: relative;
 
     display: block;
-    width: 100px;
+    width: 100%;
     text-align: center;
 
     font-family: roboto;
@@ -118,4 +120,25 @@
 
     padding: 10px 20px;
     /* border-radius: 10px; */
+}
+
+li {
+    margin: 2px 0;
+}
+.manage-spots {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 2px 0;
+}
+.link {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+}
+.logout-button {
+    background-color: gray;
+    color: white;
+    border: 2px solid black;
+    border-radius: 100px;
+    height: 30px;
 }

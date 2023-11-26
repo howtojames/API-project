@@ -8,6 +8,8 @@ import OpenModalMenuItem from './OpenModalMenuItem.jsx';  //bonus phase: mind th
 import LoginFormModal from '../LoginFormModal/LoginFormModal.jsx';
 import SignupFormModal from '../SignupFormModal/SignupFormModal.jsx';
 
+import { Link } from 'react-router-dom';
+
 //monday copied
 //Navigation.css includes styling for ProfileButton.jsx too
 //try to use classes and ids for elements
@@ -57,13 +59,15 @@ function ProfileButton({ user }) {
       </button>
       <ul id="drop-down-menu-list" className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
+          <>   {/* added based on wireframe*/}
+            <li>Hello, {user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
-            <li>Manage Spots</li>
+            <li className='manage-spots'>
+              <Link to="/spots/current" className="link">Manage Spots</Link>
+            </li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={logout} className='logout-button'>Log Out</button>
             </li>
           </>
         ) : (
