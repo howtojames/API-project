@@ -1,6 +1,10 @@
+import { csrfFetch } from "./csrf.js";
+
 const LOAD_ALL_SPOTS = "spots/loadAllSpots";
 //get a single spot
 const GET_SPOT_DETAILS = "spots/getSpotDetails"
+const POST_A_SPOT = 'spots/postASpot';
+const POST_A_SPOT_IMAGE = 'spots/postASpotImage';
 
 //action creator
 //no parameter
@@ -13,12 +17,31 @@ const loadAllSpots = (allSpots) => {
 
 
 //use this to receive the spot, to pass into the reducer
-const getSpotDetails = (spotDetails) => {
+const getSpotDetails = (spot) => {
   return {
     type: GET_SPOT_DETAILS,
-    spotDetails: spotDetails
+    spot: spot
   };
 };
+
+
+//this spotData is passed into the reducer
+const postASpot = (spotData) => {
+  return {
+    type: POST_A_SPOT,
+    spotData: spotData
+  };
+};
+
+
+//this spotImage is the data being returned by the POST response
+const postASpotImage = (spotId, spotImageData) => {
+  return {
+    type: POST_A_SPOT_IMAGE,
+    spotId: spotId,
+    spotImageData: spotImageData
+  }
+}
 
 
 
@@ -27,7 +50,7 @@ const getSpotDetails = (spotDetails) => {
 //thunk
 export const thunkGetAllSpots = () => async (dispatch) => {
   //GET /api/spots
-  const res = await fetch("/api/spots");
+  const res = await csrfFetch("/api/spots");  //fetch
 
   if(res.ok) {
     //{ Spots: [ {}, {}, ... ]}
@@ -42,7 +65,7 @@ export const thunkGetAllSpots = () => async (dispatch) => {
 
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 
-  const res = await fetch(`/api/spots/${spotId}`);
+  const res = await csrfFetch(`/api/spots/${spotId}`);  //fetch
 
   if(res.ok) {
     const spotDetails = await res.json();
@@ -55,9 +78,54 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
   }
 }
 
+//thunk for POST A SPOT
+export const thunkPostASpot = (spot) => async (dispatch) => {
+  //we get back the {} with details of the newly created Spot
+  const res = await csrfFetch(`/api/spots`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(spot)
+  });
+
+  if(res.ok) {
+    const spotData = await res.json();
+    console.log('spotData', spotData);
+    dispatch(postASpot(spotData));
+    return spotData;
+  } else  {
+    console.log('inside thunkPostASpot error message');
+    const error = await res.json();
+    console.log('error', error);
+    return error;  //if not successful, return the error data back
+  }
+}
 
 
-//const initialState = { allSpots: {}, singleSpot: {} };
+//
+export const thunkPostASpotImage = (spotId, spotImage) => async (dispatch) => {
+  //we get back the {} with details of the newly created Spot
+  const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(spotImage)
+  });
+
+  if(res.ok) {
+    const spotImageData = await res.json();
+    console.log('spotId', spotId)
+    console.log('spotImageData', spotImageData);
+    //action.spotId, action.spotImageData
+    dispatch(postASpotImage(spotId, spotImageData));
+    return spotImageData;
+  } else  {
+    console.log('inside thunkPostASpotImage error message');
+    const error = await res.json();
+    console.log('error', error);
+    return error;
+  }
+}
+
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
@@ -69,10 +137,28 @@ const spotsReducer = (state = initialState, action) => {
       //console.log('newState', newState);
       return newState;
     }
-    case GET_SPOT_DETAILS: {
-      const newState = { ...state, [action.spotDetails.id]: action.spotDetails };
+    case GET_SPOT_DETAILS: {  //this spot is the spotDetails
+                              //all key with arrays are created here, state is updated with that
+      const newState = { ...state, [action.spot.id]: action.spot };
       //console.log('GET_SPOT_DETAILS newState', newState);
       return newState;
+    }
+    case POST_A_SPOT: {  //mind your keys in your action
+      return { ...state, [action.spotData.id]: action.spotData }
+    }
+    case POST_A_SPOT_IMAGE: {  //we're only pushing one image at a time
+      if (state[action.spotId]['SpotImages']!== undefined) {  //might not need this case until later
+        console.log(`state[action.spotId] has SpotImages key, adding to the array..` );
+        const newState = { ...state,
+          [action.spotId]: {...state[action.spotId], SpotImages: [...state[action.spotId].SpotImages, action.spotImageData]}};
+        return newState;
+      } else {  //does not have SpotImages key, we create a new key
+        console.log(`state[action.spotId] DOES NOT HAVE SpotImages key, creating the key..` );
+        const SpotImages = [];
+        const newState = { ...state,
+          [action.spotId]: {...state[action.spotId], SpotImages: [...SpotImages, action.spotImageData]}};  //this is the same as push
+        return newState;
+      }
     }
     default:
       return state;
@@ -80,3 +166,9 @@ const spotsReducer = (state = initialState, action) => {
 };
 
 export default spotsReducer;
+
+
+//POST_A_SPOT_IMAGE
+//old attempt, good try, doesnt work
+//const newState = { ...state, [action.spotId]: {...state[action.spotId], SpotImages: [...state[action.spotId].SpotImages, action.spotData]} };
+//console.log('newState', newState);
