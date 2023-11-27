@@ -33,6 +33,12 @@ module.exports = {
         review: "Example review for spotId 1.",
         stars: 4,
       },
+      {     //own user review, added user 4 at the same time
+        spotId:1,
+        userId:4,
+        review: "Review from James.",
+        stars: 5,
+      },
 
       {
         spotId:2,
