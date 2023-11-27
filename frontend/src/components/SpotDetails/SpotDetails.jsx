@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 import './SpotDetails.css';
+import { thunkGetReviewsBySpotId } from '../../store/reviews'; //auto imported
 
 function SpotDetails() {
     const { spotId } = useParams();
@@ -15,22 +16,52 @@ function SpotDetails() {
     useEffect(() => {
         dispatch(thunkGetSpotDetails(spotId));
     }, [dispatch, spotId]);
+    //useSelector to get the data
+    const spotDetailsObj = useSelector (state => state.spots);
+    console.log('spotDetailsObj', spotDetailsObj);
+
+
+
+    //need useEffect logic before conditionals, or console will give an error message
+    //logic to dispatch and receive reviews
+    useEffect(() => {
+        //thunk only has one argument, action creator uses two
+        dispatch(thunkGetReviewsBySpotId(spotId));
+    }, [dispatch, spotId]);
+    const reviewsArr = useSelector(state => state.reviews.bySpot[parseInt(spotId)]);
+    console.log('reviewsArr', reviewsArr);
+    if(reviewsArr === undefined) return null; //Check this for first render, because we check for reviewsArr.length in the render below
+
 
     //function
     const onClick = () => {
         alert('Feature coming soon');
     }
-
-    //useSelector to get the data
-    const spotDetailsObj = useSelector (state => state.spots);
-    console.log('spotDetailsObj', spotDetailsObj);
+    const convertDate = (createdAt) => {
+        const year = createdAt.slice(0, 4);
+        const monthNumber = createdAt.slice(5, 7);
+        let monthName = '';
+        if (monthNumber === '01') monthName = 'January';
+        else if (monthNumber === '02') monthName = 'February';
+        else if (monthNumber === '04') monthName= 'April';
+        else if (monthNumber === '05') monthName= 'May';
+        else if (monthNumber === '06') monthName= 'June';
+        else if (monthNumber === '07') monthName= 'July';
+        else if (monthNumber === '08') monthName= 'August';
+        else if (monthNumber === '09') monthName= 'September';
+        else if (monthNumber === '10') monthName= 'October';
+        else if (monthNumber === '11') monthName= 'November';
+        else if (monthNumber === '12') monthName= 'December';
+        else monthName= 'Invalid month';
+        return `${monthName} ${year}`;
+    }
 
     //key into the id
     const id = parseInt(spotId);
     const singleSpotDetail = spotDetailsObj[id];  //obj
 
     //CHECKING HERE a single variable: for preventing error on reload
-    if(!singleSpotDetail) return null;    //CHECK
+    if(!singleSpotDetail) return null;    //CHECK: if singleSpotDetail does not exist, the SpotDetails component does not display
     //if it exists we do things with it
     console.log('singleSpotDetails', singleSpotDetail)
 
@@ -60,6 +91,7 @@ function SpotDetails() {
     } else {  //if it does not equal to 0 or
         ratingsReviewsDisplay = `   \u00B7 ${singleSpotDetail.numReviews} reviews`;
     }
+
 
 
 
@@ -117,7 +149,17 @@ function SpotDetails() {
 
                 {/* To do later: Populate Reviews */}
                 <div className="review">
-
+                    {reviewsArr.length === 0 ? (
+                        <div>Be the first to post a review!</div>
+                    ) :
+                    reviewsArr.map((review) => (
+                        <div key={review.id} className='review'>
+                            <div className="firstName">{review.User.firstName}</div>
+                            <div className="date">{convertDate(review.createdAt)}</div>
+                            <div className="review-text">{review.review}</div>
+                        </div>
+                    ))}
+                    {}
                 </div>
 
 

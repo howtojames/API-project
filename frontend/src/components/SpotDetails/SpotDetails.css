@@ -71,3 +71,17 @@
     margin-top: 10px;
     font-size: 20px;
 }
+
+/* each review */
+.review {
+    margin-top: 20px;
+}
+.firstName {
+    font-size: 20px;
+}
+.date {
+    color: gray;
+}
+.review {
+
+}
