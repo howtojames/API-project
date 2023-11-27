@@ -33,6 +33,13 @@ module.exports = {
         email: 'user2@user.io',
         username: 'FakeUser2',
         hashedPassword: bcrypt.hashSync('password3')
+      },
+      {   //added for testing and ease of use during spotdetail post review button
+        firstName: 'James',
+        lastName: 'Ruan',
+        email: 'jruan@gmail.com',
+        username: 'jruan',
+        hashedPassword: bcrypt.hashSync('password123')
       }
     ], { validate: true });
   },

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 import './SpotDetails.css';
-import { thunkGetReviewsBySpotId } from '../../store/reviews'; //auto imported
+import { thunkGetReviewsBySpotId, thunkGetReviewsCurrentUser } from '../../store/reviews'; //auto imported
 
 function SpotDetails() {
     const { spotId } = useParams();
@@ -12,15 +12,31 @@ function SpotDetails() {
     //thunk here takes in the spotId, and gets that data
     const dispatch = useDispatch();
 
+    //logic to determine if user is logged in or not
+    const sessionUser = useSelector(state => state.session.user);
+    //this runs on first render
+    let loggedIn = false;  //not logged in by default
+    if(sessionUser && Object.values(sessionUser).length > 0){
+        loggedIn = true;
+    } else {
+        loggedIn = false;
+    } //after this loggedIn is determined and put to use in the render
+    console.log('loggedIn', loggedIn);
+    //if you comment this back in , we will get an error when we go to SpotDetails while logged out
+    if(loggedIn){
+        console.log('sessionUser', sessionUser);
+        console.log('sessionUser.id', sessionUser.id);
+    }
+
+
+
     //dispatches again when spotId changes
     useEffect(() => {
         dispatch(thunkGetSpotDetails(spotId));
     }, [dispatch, spotId]);
     //useSelector to get the data
     const spotDetailsObj = useSelector (state => state.spots);
-    console.log('spotDetailsObj', spotDetailsObj);
-
-
+    //CHECK belwo
 
     //need useEffect logic before conditionals, or console will give an error message
     //logic to dispatch and receive reviews
@@ -28,9 +44,45 @@ function SpotDetails() {
         //thunk only has one argument, action creator uses two
         dispatch(thunkGetReviewsBySpotId(spotId));
     }, [dispatch, spotId]);
+
+
+    useEffect(() => {
+        dispatch(thunkGetReviewsCurrentUser());
+    }, [dispatch]);
+
+    //these reviews already tied to user
+    //reviewCurrentUser contains reviews of the current user
+    const reviewsCurrentUser = useSelector(state => state.reviews.byUser);
+
+    //dispatch(thunkGetReviewsBySpotId(spotId))
+    //reviewArr contains reviews of the current spot
     const reviewsArr = useSelector(state => state.reviews.bySpot[parseInt(spotId)]);
+
+    console.log('reviewsCurrentUser', reviewsCurrentUser);
+    if(!reviewsCurrentUser) return null;
+
     console.log('reviewsArr', reviewsArr);
     if(reviewsArr === undefined) return null; //Check this for first render, because we check for reviewsArr.length in the render below
+
+    //logic to creatte boolean, check if [reviewId] exists inside the keys
+    let userReviewed = false;  //default is false - if review.id not in reviewcurrent User
+    for(let review of reviewsArr){
+        let reviewId = review.id;
+        if(parseInt(reviewId) in reviewsCurrentUser){
+            userReviewed = true;
+        }
+    }
+
+
+
+    //Check here, so many checks...
+    if(!spotDetailsObj || !spotDetailsObj[parseInt(spotId)] || !spotDetailsObj[parseInt(spotId)].Owner) return null;  //CHECK: we will use this in first render below
+    console.log('spotDetailsObj', spotDetailsObj);
+    console.log('spotDetailsObj[spotId].Owner.id', spotDetailsObj[parseInt(spotId)].Owner.id);
+    const ownerId = spotDetailsObj[parseInt(spotId)].Owner.id;
+    if(!ownerId) return null;
+    //----
+    //if(!sessionUser || !sessionUser.id) return null;
 
 
     //function
@@ -60,22 +112,23 @@ function SpotDetails() {
     const id = parseInt(spotId);
     const singleSpotDetail = spotDetailsObj[id];  //obj
 
+    //comment back console.log to test
     //CHECKING HERE a single variable: for preventing error on reload
     if(!singleSpotDetail) return null;    //CHECK: if singleSpotDetail does not exist, the SpotDetails component does not display
     //if it exists we do things with it
-    console.log('singleSpotDetails', singleSpotDetail)
+    //console.log('singleSpotDetails', singleSpotDetail)
 
     const spotImagesArr = singleSpotDetail.SpotImages;
     if(!spotImagesArr) return null;    //CHECK
-    console.log('spotImagesArr', spotImagesArr); //good
+    //console.log('spotImagesArr', spotImagesArr); //good
 
     const ownerObj = singleSpotDetail.Owner;  //Owner: {}
     if(!ownerObj) return null;    //CHECK
-    console.log('ownerArr', ownerObj);
+    //console.log('ownerArr', ownerObj);
 
     //excluding the first element
     const spotImagesArr2 = spotImagesArr.slice(1);
-    console.log('spotImagesArr2', spotImagesArr2);
+    //console.log('spotImagesArr2', spotImagesArr2);
 
     //const spotImagesArr2 = spotImagesArr.slice(1);
 
@@ -147,6 +200,12 @@ function SpotDetails() {
                     </div>
                 </div>
 
+                <div className="post-review-button-container">
+                    {!loggedIn || (loggedIn && ownerId === sessionUser.id) || (loggedIn && userReviewed) ?
+                    <></> :
+                    <button>Post Your Review</button>}
+                </div>
+
                 {/* To do later: Populate Reviews */}
                 <div className="review">
                     {reviewsArr.length === 0 ? (
@@ -159,7 +218,6 @@ function SpotDetails() {
                             <div className="review-text">{review.review}</div>
                         </div>
                     ))}
-                    {}
                 </div>
 
 

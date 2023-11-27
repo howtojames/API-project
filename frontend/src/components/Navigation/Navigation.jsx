@@ -19,6 +19,7 @@ function Navigation({ isLoaded }) {
     loggedIn = false;
   } //after this loggedIn is determined and put to use in the render
 
+
   // console.log('sessionUser', sessionUser);
   // console.log('loggedIn', loggedIn);
   //Navigation css: added basic stylying to page
