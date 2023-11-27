@@ -2,6 +2,8 @@ import { csrfFetch } from "./csrf.js";
 
 const GET_REVIEWS_BY_SPOT_ID = 'reviews/getReviewsBySpotId';
 const GET_REVIEWS_CURRENT_USER = 'reviews/getReviewsCurrentUser';
+const POST_A_REVIEW = 'review/postAReivew';
+const DELETE_A_REVIEW = 'review/deleteAReview';
 
 
 //reviews is { Reviews: [ {}, {}, ...] }
@@ -20,6 +22,26 @@ const getReviewsCurrentUser = (reviews) => {
     reviews: reviews
   };
 };
+
+//takesin a review and the spotId
+const postAReivew = (review, spotId) => {
+  return {
+    type: POST_A_REVIEW,
+    review: review,
+    spotId: spotId
+  };
+};
+
+//need
+const deleteAReivew = (review, reviewId) => {
+  return {
+    type: DELETE_A_REVIEW,
+    review: review,
+    reviewId: reviewId
+  };
+};
+
+
 
 
 //useSpotId for the get route
@@ -58,6 +80,53 @@ export const thunkGetReviewsCurrentUser = () => async (dispatch) => {
   }
 };
 
+//need spotId to pass inside the route
+export const thunkPostAReview = (review, spotId) => async (dispatch) => {
+  //Create a Review for a Spot based on the Spot's id
+  // Method: POST
+  // URL: /api/spots/:spotId/reviews
+  const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review)
+  });
+
+  if(res.ok) {
+    // {} single object
+    const review = await res.json();
+    console.log('posted review obj', review);
+    dispatch(postAReivew(review, spotId));
+    return review;
+  } else  {
+    const error = await res.json();
+    console.log('thunk PostAReview error', error);
+    return error;
+  }
+};
+
+
+export const thunkDeleteAReview = (reviewId) => async (dispatch) => {
+  //Method: DELETE
+  //URL: /api/reviews/:reviewId
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: 'DELETE',
+  });
+
+  if(res.ok) {
+    // { message: "successful deleted or review couldn't be found"} single object
+    const review = await res.json();
+    console.log('thunk deleteAReview response', review);
+    dispatch(deleteAReivew(reviewId));
+    return review;
+  } else  {
+    const error = await res.json();
+    console.log('thunk deleteAReview error', error);
+    return error;
+  }
+};
+
+
+
 
 
 
@@ -77,9 +146,29 @@ const reviewsReducer = (state = initialState, action) => {
       //console.log('xxxxxxxxnewState', newState);
       return newState;
     }
+    // case POST_A_REVIEW: { //action has (review, spotId)
+    //   console.log('POST A REVIEW reducer case action.review', action.review);
+    //   console.log('POST A REVIEW reducer case oldState', state);
+    //    const newState = { ...state,
+    //     bySpot: {...state.bySpot,
+    //                       //spreading array             , adding new object to the array
+    //     [action.spotId]: [...state.bySpot[action.spotId], action.review]} };  //action.review is an object here, just adding it to the array, the other case might take care of it
+    //     return newState;
+    // }
+    case DELETE_A_REVIEW: {
+       //make a complete copy
+       const newState = { ...state,
+        bySpot: {...state.bySpot}, byUser: {...state.byUser} }
+       delete newState.bySpot[action.reviewId];
+       return newState;
+    }
     default:
       return state;
   }
 };
 
 export default reviewsReducer;
+
+
+// Method: DELETE
+// URL: /api/reviews/:reviewId

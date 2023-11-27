@@ -6,6 +6,14 @@ import { useEffect } from 'react';
 import './SpotDetails.css';
 import { thunkGetReviewsBySpotId, thunkGetReviewsCurrentUser } from '../../store/reviews'; //auto imported
 
+//for modal
+import { useState, useRef } from 'react';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem.jsx';  //bonus phase: mind these 3 imports
+import PostReviewModal from '../PostReviewModal/PostReviewModal.jsx';
+
+//Delete buttom
+import DeleteReviewModal from '../DeleteReviewModal/DeleteReviewModal.jsx';  //autoimported
+
 function SpotDetails() {
     const { spotId } = useParams();
     console.log('spotId', spotId);
@@ -28,15 +36,33 @@ function SpotDetails() {
         console.log('sessionUser.id', sessionUser.id);
     }
 
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
+    //logic from ProfileButton
+    useEffect(() => {
+        if (!showMenu) return;
+        //if showMenu is true, we have a closeMenu
+        const closeMenu = (e) => {
+            if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+            }
+        };
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
+    //added in bonus optional
+    const closeMenu = () => setShowMenu(false);
 
 
+    //inside SpotDetails component
     //dispatches again when spotId changes
     useEffect(() => {
         dispatch(thunkGetSpotDetails(spotId));
     }, [dispatch, spotId]);
     //useSelector to get the data
     const spotDetailsObj = useSelector (state => state.spots);
-    //CHECK belwo
+    //..
 
     //need useEffect logic before conditionals, or console will give an error message
     //logic to dispatch and receive reviews
@@ -49,6 +75,7 @@ function SpotDetails() {
     useEffect(() => {
         dispatch(thunkGetReviewsCurrentUser());
     }, [dispatch]);
+
 
     //these reviews already tied to user
     //reviewCurrentUser contains reviews of the current user
@@ -153,9 +180,8 @@ function SpotDetails() {
     return (
         <>
             <main className="page-container">
-                <h2>SpotDetails</h2>
                 <div className="upper-container">
-                    <div>{singleSpotDetail.name}</div>
+                    <h2>{singleSpotDetail.name}</h2>
                     <div>{singleSpotDetail.city}, {singleSpotDetail.state}, {singleSpotDetail.country}</div>
                 </div>
                 <div className="image-container">
@@ -200,10 +226,18 @@ function SpotDetails() {
                     </div>
                 </div>
 
+                {/* inside SpotDetails.jsx */}
                 <div className="post-review-button-container">
                     {!loggedIn || (loggedIn && ownerId === sessionUser.id) || (loggedIn && userReviewed) ?
                     <></> :
-                    <button>Post Your Review</button>}
+                    <div className="post-review-button">  {/* pass in props for spot.id */}
+                        <OpenModalMenuItem
+                        className="post-review-modal"
+                        itemText="Post Your Review"
+                        onItemClick={closeMenu}
+                        modalComponent={<PostReviewModal spotId={parseInt(spotId)}/>}
+                        />
+                    </div>}
                 </div>
 
                 {/* To do later: Populate Reviews */}
@@ -211,11 +245,23 @@ function SpotDetails() {
                     {reviewsArr.length === 0 ? (
                         <div>Be the first to post a review!</div>
                     ) :
-                    reviewsArr.map((review) => (
+                    /* need to create new reference to trigger re-render */
+                    reviewsArr.slice().reverse().map((review) => (
                         <div key={review.id} className='review'>
-                            <div className="firstName">{review.User.firstName}</div>
+                            <div className="firstName">{review?.User?.firstName}</div>
                             <div className="date">{convertDate(review.createdAt)}</div>
                             <div className="review-text">{review.review}</div>
+                            {loggedIn && sessionUser.id === review?.User?.id ?
+                            <div className="delete-review-button">
+                                <OpenModalMenuItem
+                                className="delete-review-modal"
+                                itemText="Delete"
+                                onItemClick={closeMenu}
+                                modalComponent={<DeleteReviewModal reviewId={parseInt(review.id)}/>}
+                                />
+                            </div>
+                            :
+                            null}
                         </div>
                     ))}
                 </div>

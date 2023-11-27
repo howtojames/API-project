@@ -180,8 +180,6 @@ function SpotForm() {
 
         // }
 
-
-
         //console.log('form successfully submitted')
     }
 

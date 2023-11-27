@@ -248,6 +248,7 @@ const spotsReducer = (state = initialState, action) => {
     case UPDATE_A_SPOT: {  //same as create a spot
         return { ...state, [action.spotData.id]: action.spotData };
     }
+    //DELETE case, apparently works without, we're not receiving any new data
     default:
       return state;
   }
