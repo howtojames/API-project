@@ -1,0 +1,51 @@
+.post-review-modal-container{
+    border: 3px solid black;
+    width: 330px;
+    /* border-radius: 10px;
+    overflow: hidden; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 1px;
+}
+.error-message {
+    margin: 5px 0;
+}
+
+textarea {
+    border: 2px solid black;
+    margin-bottom: 10px;
+}
+
+
+
+.rating-input {
+    display: flex;
+}
+
+.filled {
+    color: black;
+}
+
+.empty {
+    color: white;
+}
+
+
+
+.submit-review-button {
+    background-color: #ff5c5c;
+    color: white;
+    width: 100%;
+    height: 40px;
+
+    margin-top: 10px;
+}
+
+.stars-text{
+    margin-left: 3px;
+}
