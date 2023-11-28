@@ -34,6 +34,8 @@ function PostReviewModal({ spotId }) {
       }
 
       const reviewObj = await dispatch(thunkPostAReview(post, spotId));
+
+
       await dispatch(thunkGetReviewsBySpotId(spotId));
       await dispatch(thunkGetSpotDetails(spotId));
       closeModal();
