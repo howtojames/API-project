@@ -11,8 +11,7 @@ import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
 // ...
-import './SignupForm.css';
-// ...
+
 
 
 //You gotta delete the token to test the SignupFormPage
@@ -49,6 +48,9 @@ function SignupFormModal() {
        .then(closeModal)   //added .then() here in phase 4 modal
        .catch(async (res) => {
         const data = await res.json();
+
+        /* { errors: { email}} */
+        console.log('SignupFormModal data', data);
         if (data?.errors) {
           setErrors(data.errors);
         }
@@ -59,73 +61,93 @@ function SignupFormModal() {
     });
   };
 
+  const determineDisable = () => {
+    //when any one of these conditions meet, it skips over the any other checks
+    if(!email.length || !username.length || !firstName.length || !lastName.length || !password.length || !confirmPassword.length )
+      return true;
+    else if(username.length < 4) return true;
+    else if(password.length < 6) return true;
+  }
+
   return (
-    <>
-      <h1>Sign Up</h1>
+    <div className="sign-up-modal-container">
+      <h3 id="sign-up">Sign Up</h3>
+      {/* only two errors that will appear from backend, independent of each other*/}
+      {errors.email && <p>{errors.email}</p>}
+      {errors.username && <p>{errors.username}</p>}
+      {/* only frontend error that will show */}
+      {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Email
+        </label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+
+        {/* moved to top */}
         <label>
           Username
+        </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
+
+
         <label>
           First Name
+        </label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+
+        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
         <label>
           Last Name
+        </label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+
+        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
         <label>
           Password
+        </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
+
+        {errors.password && <p className="error-message">{errors.password}</p>}
         <label>
           Confirm Password
+        </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+
+        {/* error message moved up */}
+        <button type="submit" className="sign-up-button"
+        disabled={determineDisable()}>Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

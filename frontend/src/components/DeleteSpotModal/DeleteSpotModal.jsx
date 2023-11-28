@@ -8,22 +8,29 @@ import './DeleteSpotModal.css';
 
 import { thunkDeleteASpot } from '../../store/spots';
 
+import { thunkGetCurrentUserSpots } from '../../store/spots';
+
+
 function DeleteSpotModal({ spotId }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
- const handleSubmit = () => {
+ const handleSubmit = async (e) => {
     // we want page to refresh/reload automatically
-    // e.preventDefault();
+    e.preventDefault();
 
-    return dispatch(thunkDeleteASpot(spotId))
-      .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          //setErrors(data.errors);
-        }
-      });
+    await dispatch(thunkDeleteASpot(spotId))
+    //add this to re-render the data on "Manage your spots page"
+    await dispatch(thunkGetCurrentUserSpots());
+    closeModal();
+
+      // .then(closeModal)
+      // .catch(async (res) => {
+      //   const data = await res.json();
+      //   if (data && data.errors) {
+      //     //setErrors(data.errors);
+      //   }
+      // });
   };
 
   return (

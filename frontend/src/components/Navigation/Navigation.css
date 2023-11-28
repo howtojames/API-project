@@ -12,23 +12,33 @@
 /* copied form before */
 /* focus on funcitonality for now, make changes later */
 
+
 /* index.jsx */
 #navbar-container{
     display: flex;
 
     justify-content: space-around;
     height: 80px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+
+    margin: 10px 5px 10px 5px;
 }
 
 .navbar-left {
     margin-right: auto;
+    margin-top: 5px;
 }
 .navbar-right {
     display: flex;  /* flex on the right */
     justify-content: space-evenly;
 
     width: 300px;
+}
+
+
+.create-a-new-spot {
+    margin-top: 5px;
 }
 
 .create-a-new-spot-link {
@@ -53,6 +63,7 @@
     position: absolute;
     right: 10px;  /* direction are used relative to the position */
     margin-top: 8px;  /* distace from top of site */
+
 }
 .profile-button:hover {
     cursor: pointer;
@@ -65,6 +76,7 @@
 
     height: 30px;
     width: 60px;
+
 }
 
 
@@ -77,19 +89,29 @@
     background-color: white;
     border: 2px solid black;
     padding: 0px;
-
+    margin-top: 2px;
+    /* perfect */
+    z-index: 1;
 
 }
-
 /* when logged in */
 #drop-down-menu-list li{
     position: relative;
 
     display: block;
-    width: 100%;
+    width: 100%; /* adjusts the line length */
     text-align: center;
+    padding-left: 0px;
+    margin: 2px 0;
 
-    font-family: roboto;
+}
+.manage-spots {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 2px 0;
+    margin: 0;
+    display: block;
+    width: 100%
 }
 
 /* when logged out */
@@ -122,14 +144,8 @@
     /* border-radius: 10px; */
 }
 
-li {
-    margin: 2px 0;
-}
-.manage-spots {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 2px 0;
-}
+
+
 .link {
     text-decoration: none;
     color: black;

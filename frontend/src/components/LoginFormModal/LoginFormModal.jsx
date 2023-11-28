@@ -56,10 +56,8 @@ function LoginFormModal() {
   //console.log('login errors state', errors);
   return (
     <>
-
-
     <div className='login-form-container'>
-        <h3>Log In</h3>
+        <h3 id='log-in'>Log In</h3>
         {errors.message && <div className="error-message">{errors.message}</div>}
         <form onSubmit={handleSubmit}>
           <input
@@ -84,7 +82,8 @@ function LoginFormModal() {
           <p>{errors.credential}</p>
         )}
         {/* disabled anytime the username is less than 4 characters or the password is less than 6 characters. */}
-        <button type="submit" disabled={credential.length < 4 || password.length < 6} className="log-in-button">Log In</button>
+        <button type="submit" disabled={credential.length < 4 || password.length < 6}
+          id="log-in-button">Log In</button>
         <button onClick={handleDemoUser} className="login-demo-user-button">Login in as Demo User</button>
       </form>
     </div>
