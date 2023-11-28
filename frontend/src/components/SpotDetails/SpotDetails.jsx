@@ -83,6 +83,7 @@ function SpotDetails() {
 
     //dispatch(thunkGetReviewsBySpotId(spotId))
     //reviewArr contains reviews of the current spot
+    //array of review objects { spotId: , }
     const reviewsArr = useSelector(state => state.reviews.bySpot[parseInt(spotId)]);
 
     console.log('reviewsCurrentUser', reviewsCurrentUser);
@@ -257,7 +258,7 @@ function SpotDetails() {
                                 className="delete-review-modal"
                                 itemText="Delete"
                                 onItemClick={closeMenu}
-                                modalComponent={<DeleteReviewModal reviewId={parseInt(review.id)}/>}
+                                modalComponent={<DeleteReviewModal reviewId={parseInt(review.id)} spotId={parseInt(review.spotId)}/>}
                                 />
                             </div>
                             :

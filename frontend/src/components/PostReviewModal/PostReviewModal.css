@@ -46,6 +46,20 @@ textarea {
     margin-top: 10px;
 }
 
+.submit-review-button[disabled] {
+    background-color: white;
+    color: gray;
+    cursor: default;
+}
+
 .stars-text{
     margin-left: 3px;
+}
+
+.post-review-errors-container {
+    margin-bottom: 10px;
+}
+
+.post-review-errors {
+    color: red;
 }

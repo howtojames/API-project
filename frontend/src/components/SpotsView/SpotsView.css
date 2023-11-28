@@ -1,0 +1,23 @@
+#spots-view-container {
+    width: 95%;
+    margin: 0 auto;
+
+
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+
+
+}
+
+/* .tile-containers{
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+} */
+
+.spot-tile-component {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+}

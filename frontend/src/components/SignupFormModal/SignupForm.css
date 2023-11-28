@@ -1,0 +1,40 @@
+.sign-up-modal-container {
+    height: 100%;
+    width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    border: 3px solid black;
+}
+
+#sign-up {
+    margin-top: 15px;
+}
+
+label, input {
+    width: 98%;
+    padding-left: 10px;
+}
+
+.sign-up-button {
+    background-color: #ff5c5c;
+    border: 2px solid black;
+    box-shadow: 1px 1px black;
+    color: white;
+    width: 96%;
+    padding: 11px 0;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+.sign-up-button[disabled]{
+    background-color: white;
+    color: gray;
+}
+
+p {
+    color: red;
+    width: 91%;
+}

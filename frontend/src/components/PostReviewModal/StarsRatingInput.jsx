@@ -16,12 +16,7 @@ const StarsRatingInput = ({ rating, disabled, onChange }) => {
 
   return (
     <>
-        <input
-            type="number"
-            /* disabled={disabled} */
-            value={activeRating}  /* part 1, could have used rating directory from prop */
-            onChange={(e) => setActiveRating(e.target.value)}
-        />
+
         {/* changed the divs to i, put the conditional inside the className */}
         <div className="rating-input">
         <i
@@ -66,3 +61,11 @@ const StarsRatingInput = ({ rating, disabled, onChange }) => {
 };
 
 export default StarsRatingInput;
+
+
+/* {<input
+    type="number"
+    disabled={disabled}
+    value={activeRating}
+    onChange={(e) => setActiveRating(e.target.value)}
+/>} */

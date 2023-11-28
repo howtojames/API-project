@@ -3,6 +3,7 @@
 
 import { useModal } from '../../context/Modal';
 
+import './try.css';
 //It should consume the setModalContent and setOnModalClose from the ModalContext.
 //It should render a button that displays the buttonText as the text inside the button.
 function OpenModalButton({
@@ -21,7 +22,6 @@ function OpenModalButton({
 
   return (
   <>
-
     <button onClick={onClick}>{buttonText}</button>
   </>);
 }

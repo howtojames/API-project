@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 
 import SpotTile from '../SpotTile/SpotTile';
 
+import './SpotsView.css'
+
 function SpotsView() {
     const dispatch = useDispatch();
 
@@ -19,12 +21,14 @@ function SpotsView() {
 
     //console.log('allSpotsObj', allSpotsObj);
     return (
-        <>
+        <div id="spots-view-container">
             {/* artwork.id here is unique, but gallery.id is the same */}
             {allSpotsArr.map((spot) => (
-                <SpotTile key={spot.id} spot={spot} type='view-spots'/>
+
+                <SpotTile key={spot.id} spot={spot} type='view-spots' className='spot-tile-component'/>
+
             ))}
-        </>
+        </div>
     )
 }
 
