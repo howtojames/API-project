@@ -14,6 +14,8 @@ button:hover{
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-bottom: 5px;
+    margin-top: 15px;
+
 }
 
 .left-image-container {
@@ -36,6 +38,12 @@ button:hover{
 
 .middle-left-container {
     flex: 70%;
+
+    margin-top: 5px;
+    margin-right: 50px;
+}
+#description {
+    margin-top: 10px;
 }
 
 /* reserve box */
@@ -43,6 +51,8 @@ button:hover{
     flex: 30%;
     border: 2px solid black;
     border-radius: 5px;
+
+    padding: 20px 0;
 
     display: flex;
     flex-direction: column; /* order them in coolumn direction */
@@ -54,16 +64,27 @@ button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-around; /* separate night and stars * reviews */
+
+    margin-bottom: 5px;
+}
+.price {
+    font-size: 22px;
+}
+#night {
+    font-size: 16px;
 }
 
-
+/* reserver button */
 .reserve-box-bottom {
-    padding: 5px;
-    width: 80%;
+    padding: 10px 0;
+    width: 90%;
     background-color: #ff5c5c;
     color: white;
 
     margin: 0 auto;
+
+    border: 2px solid black;
+    box-shadow: 1px 1px black;
 }
 
 
@@ -80,11 +101,15 @@ button:hover{
 .review {
     margin-top: 20px;
 }
-.firstName {
-    font-size: 20px;
+#firstName {
+    font-size: 18px;
 }
-.date {
+#date {
     color: gray;
+    font-size: 16px;
+}
+#review-text {
+    font-size: 16px;
 }
 
 .post-review-button {
@@ -93,6 +118,7 @@ button:hover{
     background-color: gray;
     color: white;
     border: 2px solid black;
+    box-shadow: 1px 1px black;
 
     display: inline-block;
     padding: 0 5px;
@@ -111,6 +137,7 @@ button:hover{
     background-color: gray;
     color: white;
     border: 2px solid black;
+    box-shadow: 1px 1px black;
 
     display: inline-block;
     padding: 0 5px;

@@ -38,8 +38,8 @@ function DeleteSpotModal({ spotId }) {
       <h3>Confirm Delete</h3>
       <p>Are you sure you want to remove this spot?</p>
       <form onSubmit={handleSubmit}>
-        <button onClick={handleSubmit}className='yes'>Yes (Delete Spot)</button>
-        <button onClick={closeModal} className='no'>No (Keep Spot)</button> {/* works */}
+        <button onClick={handleSubmit} id='yes'>Yes (Delete Spot)</button>
+        <button onClick={closeModal} id='no'>No (Keep Spot)</button> {/* works */}
       </form>
     </div>
   );
