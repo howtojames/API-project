@@ -163,7 +163,7 @@ function SpotFormUpdate() {
             <section className="section-one">
                 <div>
                     <div className="section-header">Where is your place located?</div>
-                    <p>Guests will only get your address once they booked a reservation.</p>
+                    <div>Guests will only get your address once they booked a reservation.</div>
                 </div>
                 <div>
                     <div>Country {"country" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.country}</span>}</div>
@@ -182,11 +182,11 @@ function SpotFormUpdate() {
                 </div>
                 <div className='city-state-conatiner'>
                     <div className="city">
-                        <div >City {"city" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.city}</span>}</div>
+                        <div>City {"city" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.city}</span>}</div>
                         <input type="text" placeholder="City"
                             onChange={(e) => setCity(e.target.value)}
                             value={city}/>
-                        <span className='comma'>,</span>  {/* this has to be inline */}
+                        {/* <span className='comma'>,</span> */}  {/* this has to be inline */}
                     </div>
                     <div className="state">
                         <div >State {"state" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.state}</span>}</div>
@@ -200,7 +200,7 @@ function SpotFormUpdate() {
             <section className="section-two">
                 <div>
                     <div className="section-header">Describe your place to guests</div>
-                    <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
+                    <div className="update-form-description">Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</div>
                     <textarea placeholder="Please write at least 30 characters"
                      onChange={(e) => setDescription(e.target.value)}
                      value={description}/>
@@ -211,7 +211,7 @@ function SpotFormUpdate() {
             <section className="section-three">
                 <div>
                     <div className="section-header">Create a title for your Spot</div>
-                    <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+                    <div>Catch guests&apos; attention with a spot title that highlights what makes your place special.</div>
                     <input type="text" placeholder="Name of your spot" className="full-length-text-input"
                      onChange={(e) => setName(e.target.value)}
                      value={name}/>
@@ -221,9 +221,9 @@ function SpotFormUpdate() {
 
             <section className="section-four">
                 <div className="section-header">Set a base price for your spot</div>
-                <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+                <div>Competitive pricing can help your listing stand out and rank higher in search results.</div>
                 <div className="price-input-container">
-                    <div>$&nbsp;</div>
+                    <div id="dollar-sign">$&nbsp;</div>
                     <input type='number' placeholder='Price per night (USD)' className="price-input"
                     onChange={(e) => setPrice(e.target.value)}
                     value={price}/>
