@@ -25,8 +25,8 @@ form {
     width: 95%;
 }
 
-.yes,
-.no {
+#yes,
+#no {
     margin: 5px 0;
 
     padding: 10px 80px;
@@ -34,10 +34,14 @@ form {
     width: 100%;
 }
 
-.yes {
+#yes {
     background-color: #ff5c5c;
+    border: 2px solid black;
+    box-shadow: 1px 1px black;
 }
 
-.no {
+#no {
     background-color: gray;
+    border: 2px solid black;
+    box-shadow: 1px 1px black;
 }

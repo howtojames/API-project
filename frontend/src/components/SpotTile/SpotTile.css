@@ -9,12 +9,19 @@
     text-decoration: none;
 }
 .spot-link {
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
+    display: block;
+    width: 250px;
+    height: 250px;
+
+    overflow: hidden; /* want the rectangular image to be cropped into a square image */
+    position: relative;
 
     text-decoration: none;
     color: black;
-}
+} /* its okay if it's not cropped, layout is more important for now */
+
 
 .city {
     text-decoration: none;

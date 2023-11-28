@@ -188,7 +188,7 @@ function SpotDetails() {
                 <div className="image-container">
                     <div className="left-image-container">
                         {/* we must use this variable array, because it's being checked in the component */}
-                        <img src={spotImagesArr[0].url} height="400px"></img>
+                        <img src={spotImagesArr[0].url} height="404px"></img>
                     </div>
                     <div className="right-image-container">
                         {spotImagesArr2.map((spotImageObj) => (  //its map james... yikes
@@ -202,12 +202,13 @@ function SpotDetails() {
                 <div className="middle-container">
                     <div className="middle-left-container">
                         <h3>Hosted by {ownerObj.firstName} {ownerObj.lastName}</h3>
-                        <div>{singleSpotDetail.description}</div>
+                        <div id="description">{singleSpotDetail.description}</div>
 
                     </div>
                     <div className="reserve-box">
                         <div className="reserve-box-top">
-                            <div className="night">${singleSpotDetail.price} night</div>
+                            <div className="price">${singleSpotDetail.price} <span id="night">night</span></div>
+
                             <div>
                                 {/* If there are no reviews for the spot, the text, "New", should be next to the star icon instead. */}
                                 <span>&#9733;{singleSpotDetail.numReviews === 0 ? 'New' : singleSpotDetail.avgRating }</span>
@@ -249,9 +250,9 @@ function SpotDetails() {
                     /* need to create new reference to trigger re-render */
                     reviewsArr.slice().reverse().map((review) => (
                         <div key={review.id} className='review'>
-                            <div className="firstName">{review?.User?.firstName}</div>
-                            <div className="date">{convertDate(review.createdAt)}</div>
-                            <div className="review-text">{review.review}</div>
+                            <div id="firstName">{review?.User?.firstName}</div>
+                            <div id="date">{convertDate(review.createdAt)}</div>
+                            <div id="review-text">{review.review}</div>
                             {loggedIn && sessionUser.id === review?.User?.id ?
                             <div className="delete-review-button">
                                 <OpenModalMenuItem

@@ -11,23 +11,28 @@ textarea {
 }
 
 
+.section-one {
+    width: 100%;
+}
 .section-one input {
     margin-bottom: 10px;
-}
-.section-five input {
 
+}
+
+.section-header {
+    margin-bottom: 10px;
 }
 
 
 .city {
-    display: inline-block;
-    width: 70%;
+    display: inline;
+    width: 50%;
 }
 .city input{
     width: 90%;
 }
 .state {
-    display: inline-block;
+    display: inline;
     width: 30%;
 }
 
@@ -59,6 +64,10 @@ input {
     color: #ff5c5c;
 }
 
+.form-description {
+    margin-bottom: 10px;
+}
+
 
 /*section border */
 .section-two,
@@ -70,6 +79,15 @@ input {
     padding-top: 15px;
     border-top: 2px solid black;
 }
+
+
+.section-five {
+    width: 100%;
+}
+.section-six {
+    width: 100%;
+}
+
 
 .section-six {
     display: flex;

@@ -195,7 +195,7 @@ function SpotForm() {
             <section className="section-one">
                 <div>
                     <div className="section-header">Where is your place located?</div>
-                    <p>Guests will only get your address once they booked a reservation.</p>
+                    <div className="form-description">Guests will only get your address once they booked a reservation.</div>
                 </div>
                 <div>
                     <div>Country {"country" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.country}</span>}</div>
@@ -212,9 +212,9 @@ function SpotForm() {
                          value={address}/>
 
                 </div>
-                <div className='city-state-conatiner'>
+                <div id='city-state-conatiner'>
                     <div className="city">
-                        <div >City {"city" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.city}</span>}</div>
+                        <div id="city">City {"city" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.city}</span>}</div>
                         <input type="text" placeholder="City"
                             onChange={(e) => setCity(e.target.value)}
                             value={city}/>
@@ -232,7 +232,7 @@ function SpotForm() {
             <section className="section-two">
                 <div>
                     <div className="section-header">Describe your place to guests</div>
-                    <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
+                    <div className="form-description">Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</div>
                     <textarea placeholder="Please write at least 30 characters"
                      onChange={(e) => setDescription(e.target.value)}
                      value={description}/>
@@ -243,7 +243,7 @@ function SpotForm() {
             <section className="section-three">
                 <div>
                     <div className="section-header">Create a title for your Spot</div>
-                    <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+                    <div>Catch guests&apos; attention with a spot title that highlights what makes your place special.</div>
                     <input type="text" placeholder="Name of your spot" className="full-length-text-input"
                      onChange={(e) => setName(e.target.value)}
                      value={name}/>
@@ -253,7 +253,7 @@ function SpotForm() {
 
             <section className="section-four">
                 <div className="section-header">Set a base price for your spot</div>
-                <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+                <div>Competitive pricing can help your listing stand out and rank higher in search results.</div>
                 <div className="price-input-container">
                     <div>$&nbsp;</div>
                     <input type='number' placeholder='Price per night (USD)' className="price-input"
@@ -265,7 +265,7 @@ function SpotForm() {
 
             <section className="section-five">
                     <div className="section-header">Liven up your spot with photos</div>
-                    <p>Submit a link to at least one photo to publish your spot.</p>
+                    <div>Submit a link to at least one photo to publish your spot.</div>
                     <input type="text" placeholder="Preview Image URL" className="full-length-text-input"
                         onChange={(e) => setPreviewImg(e.target.value)}
                         value={previewImg}/>
@@ -296,7 +296,7 @@ function SpotForm() {
 
             {/* onSubmit handled in form element */}
             <section className="section-six">
-                <button type="submit">Create a Spot</button>
+                <button type="submit">Create Spot</button>
                 </section>
 
         </form>
