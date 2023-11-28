@@ -14,8 +14,9 @@ textarea {
 .section-one input {
     margin-bottom: 10px;
 }
-.section-five input {
 
+.update-form-description {
+    margin-bottom: 10px;
 }
 
 
@@ -78,4 +79,9 @@ input {
 .section-six button {
     background-color: #ff5c5c;;
     color: white;
+}
+
+
+#dollar-sign {
+
 }

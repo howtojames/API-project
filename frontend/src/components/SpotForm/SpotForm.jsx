@@ -218,7 +218,7 @@ function SpotForm() {
                         <input type="text" placeholder="City"
                             onChange={(e) => setCity(e.target.value)}
                             value={city}/>
-                        <span className='comma'>,</span>  {/* this has to be inline */}
+                        {/* <span className='comma'>,</span> */}  {/* this has to be inline */}
                     </div>
                     <div className="state">
                         <div >State {"state" in validationErrors && hasSubmitted && <span className='error-message'>{validationErrors.state}</span>}</div>
@@ -255,7 +255,7 @@ function SpotForm() {
                 <div className="section-header">Set a base price for your spot</div>
                 <div>Competitive pricing can help your listing stand out and rank higher in search results.</div>
                 <div className="price-input-container">
-                    <div>$&nbsp;</div>
+                    <div id="dollar-sign">$&nbsp;</div>
                     <input type='number' placeholder='Price per night (USD)' className="price-input"
                     onChange={(e) => setPrice(e.target.value)}
                     value={price}/>
