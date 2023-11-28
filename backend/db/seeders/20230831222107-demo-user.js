@@ -40,6 +40,13 @@ module.exports = {
         email: 'jruan@gmail.com',
         username: 'jruan',
         hashedPassword: bcrypt.hashSync('password123')
+      },
+      {
+        firstName: 'Demo',
+        lastName: 'User',
+        email: 'demouser@gmail.com',
+        username: 'DemoUser',
+        hashedPassword: bcrypt.hashSync('password123')
       }
     ], { validate: true });
   },

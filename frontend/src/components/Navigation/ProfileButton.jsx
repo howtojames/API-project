@@ -10,6 +10,9 @@ import SignupFormModal from '../SignupFormModal/SignupFormModal.jsx';
 
 import { Link } from 'react-router-dom';
 
+//on check list
+import { useNavigate } from 'react-router-dom';
+
 //monday copied
 //Navigation.css includes styling for ProfileButton.jsx too
 //try to use classes and ids for elements
@@ -19,6 +22,9 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+
+  //
+  const navigate = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -47,6 +53,8 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    //User Menu and Log out checklist
+    navigate('/');
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");

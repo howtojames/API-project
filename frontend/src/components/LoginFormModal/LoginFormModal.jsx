@@ -14,48 +14,81 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+
+        const dataObj = await res.json();
+        //console.log('data', dataObj);
+        if (dataObj && dataObj.message) {
+          //console.log('inside', dataObj);
+          setErrors(dataObj);
         }
       });
   };
 
+  //demouser
+  const handleDemoUser = (e) => {
+    e.preventDefault();
+    setErrors({});
+    //create demo user
+    const demoUser = {
+      credential: 'DemoUser',
+      password: 'password123'
+    };
+
+    return dispatch(sessionActions.login(demoUser))
+      .then(closeModal)
+      .catch(async (res) => {
+        const dataObj = await res.json();
+        //console.log('data', dataObj);
+        if (dataObj && dataObj.message) {
+          //console.log('inside', dataObj);
+          setErrors(dataObj);
+        }
+      });
+  }
+
+  //console.log('login errors state', errors);
   return (
+    <>
+
+
     <div className='login-form-container'>
-      <h1>Log In</h1>
-      <p>LoginFormModal</p>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+        <h3>Log In</h3>
+        {errors.message && <div className="error-message">{errors.message}</div>}
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
+            placeholder="Username or Email"
           />
-        </label>
-        <label>
-          Password
+
+
+
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password"
           />
-        </label>
+
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        {/* disabled anytime the username is less than 4 characters or the password is less than 6 characters. */}
+        <button type="submit" disabled={credential.length < 4 || password.length < 6} className="log-in-button">Log In</button>
+        <button onClick={handleDemoUser} className="login-demo-user-button">Login in as Demo User</button>
       </form>
     </div>
+    </>
   );
 }
 
